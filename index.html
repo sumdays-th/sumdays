@@ -1316,49 +1316,7 @@ img { max-width: 100%; display: block; object-fit: cover; }
 <div class="container">
 
   <!-- HERO -->
-  <section class="hero-section reveal">
-    <div class="hero-grid">
-      <div class="hero-main" onclick="openArticle(0)">
-        <div class="hero-main-img">
-          <div class="hero-main-img-placeholder">🏛️</div>
-          <div class="hero-badge-cat">รัฐบาล</div>
-        </div>
-        <div class="hero-main-body">
-          <div class="hero-main-title">รัฐบาลเดินหน้า "โครงการเบี้ยผู้สูงอายุถ้วนหน้า" คาดเริ่มจ่ายในปีงบประมาณ 2569</div>
-          <div class="hero-main-excerpt">คณะรัฐมนตรีอนุมัติหลักการปรับระบบสวัสดิการผู้สูงอายุ มุ่งขยายความครอบคลุมให้ทุกคนได้รับสิทธิ ไม่ว่าจะมีรายได้เท่าใด พร้อมปรับเพิ่มอัตราเบี้ยตามช่วงอายุ</div>
-          <div class="hero-meta">
-            <span>กองบรรณาธิการ sumdays</span>
-            <span class="sep"></span>
-            <span>2 พ.ค. 2569</span>
-            <span class="sep"></span>
-            <span>อ่าน 5 นาที</span>
-          </div>
-        </div>
-      </div>
-      <div class="hero-side-card" onclick="openArticle(1)">
-        <div class="hero-side-img" style="background: linear-gradient(135deg,#1A6640,#0A3820);">
-          <div style="display:flex;align-items:center;justify-content:center;height:100%;font-size:50px;opacity:0.3;">💊</div>
-          <div class="hero-badge-cat" style="background:var(--green);">สุขภาพ</div>
-        </div>
-        <div class="hero-side-body">
-          <div class="side-cat">สุขภาพ</div>
-          <div class="side-title">5 วิธีดูแลสุขภาพสำหรับผู้สูงอายุในช่วงหน้าร้อน ที่กรมอนามัยแนะนำ</div>
-          <div class="side-time">1 พ.ค. 2569</div>
-        </div>
-      </div>
-      <div class="hero-side-card" onclick="openArticle(2)">
-        <div class="hero-side-img" style="background: linear-gradient(135deg,#B8820A,#6A4500);">
-          <div style="display:flex;align-items:center;justify-content:center;height:100%;font-size:50px;opacity:0.3;">💰</div>
-          <div class="hero-badge-cat" style="background:var(--gold);">เศรษฐกิจ</div>
-        </div>
-        <div class="hero-side-body">
-          <div class="side-cat">เศรษฐกิจ</div>
-          <div class="side-title">ธปท. ปรับลดดอกเบี้ยนโยบาย ส่งสัญญาณช่วยบรรเทาภาระลูกหนี้รายย่อย</div>
-          <div class="side-time">1 พ.ค. 2569</div>
-        </div>
-      </div>
-    </div>
-  </section>
+  <section class="hero-section" id="heroSection" style="display:none;"></section>
 
   <!-- MAIN LAYOUT -->
   <div class="main-layout">
@@ -1369,15 +1327,15 @@ img { max-width: 100%; display: block; object-fit: cover; }
         <div class="gov-banner-label">🏛️ บริการรัฐและสิทธิประโยชน์</div>
         <div class="gov-banner-title">รวมข้อมูลสำคัญจากภาครัฐสำหรับผู้สูงวัย</div>
         <div class="gov-items">
-          <div class="gov-item" onclick="openArticle(3)">
+          <div class="gov-item" onclick="localNews.find(x=>x.id==3) ? openArticle(3) : null">
             <span>📋 ตรวจสอบสิทธิ์บัตรทองและสวัสดิการผู้สูงอายุ 2569</span>
             <span class="gov-item-arrow">›</span>
           </div>
-          <div class="gov-item" onclick="openArticle(4)">
+          <div class="gov-item" onclick="localNews.find(x=>x.id==4) ? openArticle(4) : null">
             <span>🏥 คลินิกผู้สูงอายุ รพ. ใกล้บ้าน เปิดลงทะเบียนออนไลน์</span>
             <span class="gov-item-arrow">›</span>
           </div>
-          <div class="gov-item" onclick="openArticle(5)">
+          <div class="gov-item" onclick="localNews.find(x=>x.id==5) ? openArticle(5) : null">
             <span>💳 เงินสนับสนุนค่าครองชีพ 1,000 บาท/เดือน เช็กเงื่อนไขที่นี่</span>
             <span class="gov-item-arrow">›</span>
           </div>
@@ -1422,44 +1380,10 @@ img { max-width: 100%; display: block; object-fit: cover; }
       </div>
 
       <!-- TRENDING -->
-      <div class="sidebar-block reveal">
-        <div class="sidebar-head">🔥 ข่าวยอดนิยมวันนี้</div>
-        <div class="sidebar-list">
-          <div class="sidebar-item" onclick="openArticle(0)">
-            <span class="sidebar-num">1</span>
-            <div>
-              <div class="sidebar-item-text">เบี้ยผู้สูงอายุถ้วนหน้า — อัตราใหม่และวิธีลงทะเบียน</div>
-              <div class="sidebar-item-time">2 ชั่วโมงที่แล้ว</div>
-            </div>
-          </div>
-          <div class="sidebar-item" onclick="openArticle(1)">
-            <span class="sidebar-num">2</span>
-            <div>
-              <div class="sidebar-item-text">วัคซีนไข้หวัดใหญ่ฟรี สำหรับผู้สูงอายุ — เช็กสิทธิ์ที่นี่</div>
-              <div class="sidebar-item-time">4 ชั่วโมงที่แล้ว</div>
-            </div>
-          </div>
-          <div class="sidebar-item" onclick="openArticle(2)">
-            <span class="sidebar-num">3</span>
-            <div>
-              <div class="sidebar-item-text">ธปท. ลดดอกเบี้ย ส่งผลต่อเงินฝากอย่างไร?</div>
-              <div class="sidebar-item-time">6 ชั่วโมงที่แล้ว</div>
-            </div>
-          </div>
-          <div class="sidebar-item" onclick="openArticle(3)">
-            <span class="sidebar-num">4</span>
-            <div>
-              <div class="sidebar-item-text">บัตรทอง 2569 — สิทธิที่ครอบคลุมและโรงพยาบาลรัฐที่ใช้ได้</div>
-              <div class="sidebar-item-time">8 ชั่วโมงที่แล้ว</div>
-            </div>
-          </div>
-          <div class="sidebar-item" onclick="openArticle(4)">
-            <span class="sidebar-num">5</span>
-            <div>
-              <div class="sidebar-item-text">โครงการบ้านผู้สูงอายุ รัฐสนับสนุนดอกเบี้ย 0%</div>
-              <div class="sidebar-item-time">10 ชั่วโมงที่แล้ว</div>
-            </div>
-          </div>
+      <div class="sidebar-block reveal" id="trendingBlock">
+        <div class="sidebar-head">🔥 ข่าวล่าสุด</div>
+        <div class="sidebar-list" id="trendingList">
+          <div style="padding:16px;font-size:14px;color:var(--text-mute);text-align:center;">ยังไม่มีข่าวค่ะ</div>
         </div>
       </div>
 
@@ -1589,99 +1513,7 @@ img { max-width: 100%; display: block; object-fit: cover; }
 
 <script>
 // ============ DATA ============
-const NEWS = [
-  {
-    id:0, cat:'gov', catLabel:'รัฐบาล',
-    title:'รัฐบาลเดินหน้า "โครงการเบี้ยผู้สูงอายุถ้วนหน้า" คาดเริ่มจ่ายในปีงบประมาณ 2569',
-    excerpt:'คณะรัฐมนตรีอนุมัติหลักการปรับระบบสวัสดิการผู้สูงอายุ มุ่งขยายความครอบคลุมให้ทุกคนได้รับสิทธิ ไม่ว่าจะมีรายได้เท่าใด',
-    body:`<p>คณะรัฐมนตรีมีมติเห็นชอบหลักการ "โครงการเบี้ยผู้สูงอายุถ้วนหน้า" ซึ่งเป็นการปรับระบบจากเดิมที่เป็นแบบเฉพาะกลุ่มผู้มีรายได้น้อย มาเป็นสวัสดิการที่ครอบคลุมผู้สูงอายุทุกคนที่มีอายุ 60 ปีขึ้นไปและมีสัญชาติไทย</p><p>โดยอัตราเบี้ยยังชีพใหม่จะปรับเป็น 600 บาทต่อเดือนสำหรับผู้มีอายุ 60–69 ปี, 700 บาทต่อเดือนสำหรับอายุ 70–79 ปี, 800 บาทต่อเดือนสำหรับอายุ 80–89 ปี และ 1,000 บาทต่อเดือนสำหรับอายุ 90 ปีขึ้นไป</p><p>นายกรัฐมนตรีระบุว่า นโยบายนี้สอดคล้องกับแผนพัฒนาผู้สูงอายุแห่งชาติ ฉบับที่ 3 และจะเป็นหลักประกันรายได้ขั้นพื้นฐานสำหรับผู้สูงวัยทุกคน</p><p>สำหรับขั้นตอนการลงทะเบียน ผู้ที่ยังไม่เคยลงทะเบียนรับเบี้ยผู้สูงอายุสามารถติดต่อสำนักงานเขต/อบต./เทศบาลในพื้นที่ หรือลงทะเบียนออนไลน์ผ่านแอปพลิเคชัน "ทางรัฐ" ได้ตั้งแต่เดือนมิถุนายน 2569 เป็นต้นไป</p>`,
-    author:'กองบรรณาธิการ sumdays', date:'2 พ.ค. 2569', readTime:'5 นาที', views:12480
-  },
-  {
-    id:1, cat:'health', catLabel:'สุขภาพ',
-    title:'5 วิธีดูแลสุขภาพสำหรับผู้สูงอายุในช่วงหน้าร้อน ที่กรมอนามัยแนะนำ',
-    excerpt:'กรมอนามัยออกคำแนะนำสำหรับผู้สูงอายุรับมือฤดูร้อน เน้นการดื่มน้ำ หลีกเลี่ยงแดดจัด และสังเกตอาการฮีทสโตรก',
-    body:`<p>กรมอนามัย กระทรวงสาธารณสุข ได้ออกคำแนะนำสำหรับผู้สูงอายุในช่วงฤดูร้อน เนื่องจากอากาศร้อนจัดส่งผลกระทบต่อสุขภาพผู้สูงวัยมากกว่ากลุ่มวัยอื่น</p><p><strong>1. ดื่มน้ำอย่างน้อย 8 แก้วต่อวัน</strong> แม้จะไม่รู้สึกกระหายน้ำ เนื่องจากผู้สูงอายุมักรับรู้ความกระหายได้น้อยกว่าคนหนุ่มสาว</p><p><strong>2. หลีกเลี่ยงออกนอกบ้านช่วง 10.00–15.00 น.</strong> ซึ่งเป็นช่วงที่แสงแดดและความร้อนสูงสุด หากจำเป็นต้องออกไป ควรสวมหมวก ร่ม และสวมเสื้อผ้าสีอ่อน</p><p><strong>3. รับประทานอาหารที่มีน้ำสูง</strong> เช่น ผลไม้ตระกูลแตง แตงโม สับปะรด เพื่อเสริมการดูดซึมน้ำของร่างกาย</p><p><strong>4. สังเกตอาการฮีทสโตรก</strong> ได้แก่ วิงเวียน คลื่นไส้ ผิวหนังร้อน แดง ไม่มีเหงื่อ หรือสับสน หากพบให้รีบพาไปที่ร่มและโทร 1669</p><p><strong>5. ใช้พัดลมหรือเครื่องปรับอากาศ</strong> ในช่วงกลางวัน โดยเฉพาะผู้ที่มีโรคประจำตัว เช่น โรคหัวใจ ความดันโลหิตสูง</p>`,
-    author:'ฝ่ายสุขภาพ', date:'1 พ.ค. 2569', readTime:'4 นาที', views:8320
-  },
-  {
-    id:2, cat:'economy', catLabel:'เศรษฐกิจ',
-    title:'ธปท. ปรับลดดอกเบี้ยนโยบาย ส่งสัญญาณช่วยบรรเทาภาระลูกหนี้รายย่อย',
-    excerpt:'ธนาคารแห่งประเทศไทยมีมติปรับลดอัตราดอกเบี้ยนโยบาย 0.25% เพื่อกระตุ้นเศรษฐกิจและบรรเทาภาระลูกหนี้',
-    body:`<p>คณะกรรมการนโยบายการเงิน (กนง.) มีมติปรับลดอัตราดอกเบี้ยนโยบายลง 0.25% ต่อปี จาก 2.50% เป็น 2.25% มีผลทันที ท่ามกลางสัญญาณเศรษฐกิจที่ยังฟื้นตัวช้า</p><p>การปรับลดดอกเบี้ยครั้งนี้ส่งผลให้ธนาคารพาณิชย์หลายแห่งประกาศปรับลดดอกเบี้ยเงินกู้ตาม ซึ่งจะช่วยบรรเทาภาระผ่อนสินเชื่อบ้านและสินเชื่อส่วนบุคคลสำหรับลูกหนี้รายย่อย</p><p>อย่างไรก็ตาม ดอกเบี้ยเงินฝากก็อาจปรับลดลงด้วยเช่นกัน ผู้สูงอายุที่มีเงินออมในธนาคารอาจต้องพิจารณาทางเลือกการออมที่หลากหลายมากขึ้น เช่น พันธบัตรรัฐบาลหรือกองทุนตราสารหนี้</p>`,
-    author:'ฝ่ายเศรษฐกิจ', date:'1 พ.ค. 2569', readTime:'3 นาที', views:6150
-  },
-  {
-    id:3, cat:'welfare', catLabel:'สวัสดิการ',
-    title:'บัตรทอง 2569 — สิทธิประโยชน์ครอบคลุม และวิธีใช้บริการโรงพยาบาลรัฐ',
-    excerpt:'สปสช. อัปเดตสิทธิ์บัตรทองปี 2569 ขยายการรักษาฟรีที่โรงพยาบาลรัฐทุกแห่ง ไม่ต้องมีใบส่งตัว',
-    body:`<p>สำนักงานหลักประกันสุขภาพแห่งชาติ (สปสช.) ยืนยันว่าผู้ถือสิทธิ์บัตรทองสามารถเข้ารับบริการในโรงพยาบาลรัฐที่ลงทะเบียนไว้ได้โดยไม่เสียค่าใช้จ่าย และในกรณีฉุกเฉินสามารถเข้ารับการรักษาที่โรงพยาบาลรัฐใดก็ได้ทั่วประเทศ</p><p>สิทธิ์ที่ครอบคลุมได้แก่ การตรวจรักษาทั่วไป ยา การผ่าตัด การทำฟัน การตรวจคัดกรองโรค และการรักษาโรคเรื้อรัง เช่น เบาหวาน ความดัน มะเร็ง</p><p>การตรวจสอบสิทธิ์: โทร 1330 หรือแอปพลิเคชัน "สปสช." หรือเว็บไซต์ nhso.go.th</p>`,
-    author:'ฝ่ายสวัสดิการ', date:'30 เม.ย. 2569', readTime:'4 นาที', views:5890
-  },
-  {
-    id:4, cat:'social', catLabel:'สังคม',
-    title:'โครงการบ้านผู้สูงอายุ รัฐสนับสนุนสินเชื่อดอกเบี้ย 0% สำหรับผู้มีรายได้น้อย',
-    excerpt:'กรมพัฒนาสังคมและสวัสดิการประกาศขยายโครงการ เปิดรับสมัครผู้สูงอายุรายได้น้อยขอรับสนับสนุนปรับปรุงบ้าน',
-    body:`<p>กรมพัฒนาสังคมและสวัสดิการ (พส.) เปิดตัวโครงการสนับสนุนการปรับปรุงที่อยู่อาศัยสำหรับผู้สูงอายุรายได้น้อย วงเงินสูงสุด 40,000 บาทต่อราย โดยไม่มีดอกเบี้ยสำหรับผู้มีรายได้ต่ำกว่า 30,000 บาทต่อปี</p><p>การปรับปรุงที่ครอบคลุม ได้แก่ การติดราวจับในห้องน้ำ ลาดทางสำหรับรถเข็น การปรับพื้นผิวป้องกันการลื่น และการต่อเติมห้องน้ำชั้นล่าง</p><p>สามารถยื่นเรื่องได้ที่ศูนย์พัฒนาสังคมทุกจังหวัด หรือโทรสายด่วน 1300</p>`,
-    author:'ฝ่ายสังคม', date:'29 เม.ย. 2569', readTime:'3 นาที', views:4210
-  },
-  {
-    id:5, cat:'gov', catLabel:'รัฐบาล',
-    title:'เงินสนับสนุนค่าครองชีพ 1,000 บาท/เดือน — คุณสมบัติและขั้นตอนการรับสิทธิ์',
-    excerpt:'กรมบัญชีกลางชี้แจงเงื่อนไขการรับเงินสนับสนุนค่าครองชีพ ผู้สูงอายุต้องลงทะเบียนก่อนสิ้นเดือนพฤษภาคม',
-    body:`<p>กรมบัญชีกลางประกาศรายละเอียดโครงการ "เงินสนับสนุนค่าครองชีพผู้สูงอายุ" วงเงิน 1,000 บาทต่อเดือน สำหรับผู้ที่มีคุณสมบัติดังนี้</p><p>1. มีอายุ 60 ปีขึ้นไป<br>2. มีสัญชาติไทย<br>3. มีรายได้ไม่เกิน 100,000 บาทต่อปี<br>4. ไม่ได้รับสวัสดิการข้าราชการบำนาญ</p><p>วิธีลงทะเบียน: ยื่นเอกสารที่สำนักงานเขต/อบต./เทศบาลที่มีชื่อในทะเบียนบ้าน พร้อมบัตรประชาชน ทะเบียนบ้าน และสมุดบัญชีธนาคาร ภายในวันที่ 31 พฤษภาคม 2569</p>`,
-    author:'ฝ่ายนโยบาย', date:'28 เม.ย. 2569', readTime:'3 นาที', views:9400
-  },
-  {
-    id:6, cat:'tech', catLabel:'เทคโนโลยี',
-    title:'แอปฯ "ทางรัฐ" อัปเดตใหม่ — ใช้งานง่ายขึ้น มีฟีเจอร์พิเศษสำหรับผู้สูงอายุ',
-    excerpt:'กระทรวงดิจิทัลฯ ปรับปรุงแอปฯ ทางรัฐ เพิ่มโหมดตัวอักษรใหญ่และเสียงอ่านข้อความ รองรับผู้สูงวัย',
-    body:`<p>กระทรวงดิจิทัลเพื่อเศรษฐกิจและสังคม (ดีอีเอส) เปิดตัวแอปพลิเคชัน "ทางรัฐ" เวอร์ชัน 4.0 ที่ออกแบบให้ผู้สูงอายุใช้งานได้สะดวกยิ่งขึ้น</p><p>ฟีเจอร์ใหม่ที่น่าสนใจ ได้แก่ โหมดตัวอักษรขนาดใหญ่พิเศษ, ฟังก์ชันอ่านออกเสียงข้อความ, ปุ่มขนาดใหญ่และระยะห่างเพียงพอ และการล็อกอินด้วยใบหน้าหรือลายนิ้วมือ</p><p>สามารถดาวน์โหลดได้จาก App Store และ Google Play โดยค้นหาคำว่า "ทางรัฐ"</p>`,
-    author:'ฝ่ายเทคโนโลยี', date:'27 เม.ย. 2569', readTime:'2 นาที', views:3120
-  },
-  {
-    id:7, cat:'local', catLabel:'ท้องถิ่น',
-    title:'กทม. เปิด "คลินิกผู้สูงอายุ" ครบทุก 50 เขต ให้บริการโดยไม่ต้องนัดล่วงหน้า',
-    excerpt:'กรุงเทพมหานครขยายบริการคลินิกผู้สูงอายุให้ครอบคลุมทุกเขต พร้อมบริการตรวจสุขภาพประจำปีฟรี',
-    body:`<p>กรุงเทพมหานครประกาศเปิด "คลินิกผู้สูงอายุ" ครบทั้ง 50 เขต โดยให้บริการตรวจสุขภาพเบื้องต้น ประเมินความเสี่ยงโรค และให้คำปรึกษาโดยทีมแพทย์และพยาบาลผู้เชี่ยวชาญ</p><p>บริการที่ให้ฟรีสำหรับผู้มีอายุ 60 ปีขึ้นไปและมีทะเบียนบ้านในกทม. ได้แก่ การตรวจเลือดประจำปี ตรวจความดัน น้ำตาล ไขมัน และการประเมินความเสี่ยงภาวะสมองเสื่อม</p><p>สอบถามเขตใกล้บ้านหรือโทร 1555 (สายด่วน กทม.)</p>`,
-    author:'ฝ่ายท้องถิ่น', date:'26 เม.ย. 2569', readTime:'3 นาที', views:7230
-  },
-  {
-    id:10, cat:'fitness', catLabel:'ออกกำลังกาย',
-    title:'ท่าบริหารร่างกาย 10 นาทีต่อวัน สำหรับผู้สูงอายุ ทำได้ที่บ้านโดยไม่ต้องใช้อุปกรณ์',
-    excerpt:'กรมการแพทย์แนะนำท่าออกกำลังกายเบาๆ ที่เหมาะกับผู้สูงวัย ช่วยเพิ่มความยืดหยุ่น สมดุลร่างกาย และลดความเสี่ยงหกล้ม',
-    body:`<p>การออกกำลังกายสม่ำเสมอเป็นกุญแจสำคัญของสุขภาพที่ดีในวัยสูงอายุ</p><p><strong>1. ท่ายืนเขย่งเท้า</strong> — ยืนตรงจับพนักเก้าอี้ เขย่งปลายเท้าขึ้นลงช้าๆ 15 ครั้ง ช่วยเสริมกล้ามเนื้อน่อง</p><p><strong>2. ท่าเดินอยู่กับที่</strong> — ยืนยกเข่าสลับซ้ายขวาช้าๆ นาน 1 นาที ช่วยการทรงตัว</p><p><strong>3. ท่าหมุนข้อไหล่</strong> — หมุนไหล่ไปข้างหน้าและข้างหลัง 10 รอบ ลดอาการปวดเมื่อย</p><p><strong>4. ท่านั่งยืน</strong> — นั่งแล้วลุกขึ้นยืนช้าๆ 10 ครั้ง เสริมกล้ามเนื้อขา</p><p><strong>5. ท่าหายใจลึก</strong> — หายใจเข้าลึกๆ นับ 4 กลั้นนับ 2 หายใจออกนับ 6 ทำ 5 รอบ ลดความเครียด</p>`,
-    author:'ฝ่ายสุขภาพ', date:'2 พ.ค. 2569', readTime:'3 นาที', views:0
-  },
-  {
-    id:11, cat:'recipe', catLabel:'สูตรอาหาร',
-    title:'ต้มจืดเต้าหู้ผักรวม สูตรเพื่อสุขภาพผู้สูงวัย โซเดียมต่ำ ย่อยง่าย',
-    excerpt:'เมนูต้มจืดเบาๆ รสชาติกลมกล่อม เต็มไปด้วยโปรตีนและแร่ธาตุ เหมาะกับผู้ที่ควบคุมความดันและเบาหวาน',
-    body:`<p>ต้มจืดเต้าหู้ผักรวมเป็นเมนูที่เหมาะมากสำหรับผู้สูงอายุ เพราะให้โปรตีนสูง ย่อยง่าย</p><p><strong>ส่วนผสม (2 คน):</strong> เต้าหู้ขาวนุ่ม 1 แผ่น แครอท 1 หัว ข้าวโพดอ่อน 5 ฝัก เห็ดหอม 4 ดอก ผักกาดขาว 3 ใบ น้ำซุป 4 ถ้วย ซีอิ๊วขาวโซเดียมต่ำ 1 ช้อนโต๊ะ</p><p><strong>วิธีทำ:</strong> ต้มน้ำซุปให้เดือด ใส่แครอทและเห็ดก่อน 5 นาที ใส่ข้าวโพดและผักกาด 3 นาที ใส่เต้าหู้ ปรุงรส โรยต้นหอม พร้อมเสิร์ฟค่ะ</p>`,
-    author:'ฝ่ายโภชนาการ', date:'1 พ.ค. 2569', readTime:'4 นาที', views:0
-  },
-  {
-    id:12, cat:'selfdev', catLabel:'พัฒนาตัวเอง',
-    title:'เริ่มต้นเรียนรู้สิ่งใหม่ในวัย 60+ ไม่มีคำว่าสายเกินไป',
-    excerpt:'งานวิจัยพบว่าการเรียนรู้สิ่งใหม่ในวัยสูงอายุช่วยชะลอความเสื่อมของสมอง และเพิ่มความสุขในชีวิตได้อย่างมีนัยสำคัญ',
-    body:`<p>ความเชื่อที่ว่าแก่แล้วเรียนรู้ไม่ได้เป็นความเข้าใจผิดค่ะ สมองมนุษย์มีความยืดหยุ่นและพัฒนาได้ตลอดชีวิต</p><p>🎨 <strong>วาดภาพหรืองานฝีมือ</strong> — ช่วยฝึกสมาธิ</p><p>📱 <strong>เรียนใช้สมาร์ทโฟน</strong> — ติดตามข่าว วิดีโอคอล แชร์รูปครอบครัว</p><p>🌱 <strong>ปลูกต้นไม้</strong> — ฝึกความอดทน</p><p>📚 <strong>อ่านหนังสือ</strong> — กระตุ้นจินตนาการ</p><p>🎵 <strong>เรียนดนตรี</strong> — ช่วยฝึกสมองได้มาก</p><p>เริ่มจากสิ่งที่ชอบทีละเล็กทีละน้อยนะคะ</p>`,
-    author:'กองบรรณาธิการ sumdays', date:'30 เม.ย. 2569', readTime:'4 นาที', views:0
-  },
-  {
-    id:13, cat:'mental', catLabel:'สุขภาพจิต',
-    title:'รับมือความเหงาอย่างไร? เคล็ดลับสร้างความสุขในชีวิตประจำวันสำหรับผู้สูงวัย',
-    excerpt:'ผู้สูงอายุจำนวนมากเผชิญกับความเหงาโดยไม่รู้ตัว นักจิตวิทยาแนะวิธีสร้างความสัมพันธ์และค้นหาความหมายในชีวิตใหม่',
-    body:`<p>ความเหงาเป็นหนึ่งในความท้าทายที่พบบ่อยในวัยสูงอายุ แต่มีวิธีรับมือได้ค่ะ</p><p><strong>1. สร้างกิจวัตรที่มีความหมาย</strong> — ตื่นนอนเวลาเดิม ทานอาหารตรงเวลา ออกกำลังกายสม่ำเสมอ</p><p><strong>2. เชื่อมต่อกับผู้อื่น</strong> — เข้าร่วมชมรมหรือกิจกรรมในชุมชน</p><p><strong>3. อาสาสมัครทำประโยชน์</strong> — สร้างความรู้สึกมีคุณค่า</p><p><strong>4. พูดคุยกับครอบครัว</strong> — บอกความรู้สึกตรงๆ</p><p><strong>5. ขอความช่วยเหลือ</strong> — หากรู้สึกเศร้าต่อเนื่องนานกว่า 2 สัปดาห์ ควรปรึกษาแพทย์ค่ะ</p>`,
-    author:'ฝ่ายสุขภาพจิต', date:'29 เม.ย. 2569', readTime:'5 นาที', views:0
-  },
-  {
-    id:14, cat:'selfcare', catLabel:'ดูแลตัวเอง',
-    title:'ดูแลผิวพรรณในวัยสูงอายุ ทำได้ง่ายๆ ด้วยของใกล้มือและไม่ต้องแพง',
-    excerpt:'ผิวหนังในวัยสูงอายุต้องการการดูแลเป็นพิเศษ ผู้เชี่ยวชาญแนะวิธีง่ายๆ ที่ทำได้เองที่บ้าน',
-    body:`<p>ผิวหนังของผู้สูงอายุบางลงและสูญเสียความชุ่มชื้นเร็วกว่า การดูแลที่ถูกต้องช่วยลดปัญหาได้มากค่ะ</p><p>🧴 <strong>ทามอยส์เจอร์ไรเซอร์</strong> — ทาหลังอาบน้ำทันทีขณะผิวยังชื้น</p><p>☀️ <strong>ทากันแดด SPF 30 ขึ้นไป</strong> — แม้อยู่ในร่ม</p><p>💧 <strong>ดื่มน้ำ 6-8 แก้วต่อวัน</strong> — ผิวชุ่มชื้นจากภายใน</p><p>🚿 <strong>อาบน้ำอุ่น ไม่ร้อนจัด</strong> — น้ำร้อนทำลายน้ำมันธรรมชาติในผิว</p><p>หากมีอาการผิดปกติควรปรึกษาแพทย์ผิวหนังนะคะ</p>`,
-    author:'ฝ่ายสุขภาพ', date:'28 เม.ย. 2569', readTime:'3 นาที', views:0
-  }
-];
+const NEWS = [];
 
 let isAdmin = false;
 let currentTab = 'news';
@@ -1743,6 +1575,68 @@ function filterCat(cat, el) {
   renderNews(cat);
 }
 
+// ============ RENDER HERO ============
+function renderHero() {
+  const sec = document.getElementById('heroSection');
+  if (!sec) return;
+  if (!localNews.length) { sec.style.display='none'; return; }
+  sec.style.display = 'block';
+  const n0 = localNews[0], n1 = localNews[1], n2 = localNews[2];
+  sec.innerHTML = `<div class="hero-grid">
+    <div class="hero-main" onclick="openArticle(${n0.id})" style="cursor:pointer;">
+      <div class="hero-main-img" style="background:${catColor(n0.cat)}">
+        ${n0.image ? `<img src="${n0.image}" style="width:100%;height:100%;object-fit:cover;">` : `<div class="hero-main-img-placeholder">${catEmoji(n0.cat)}</div>`}
+        <div class="hero-badge-cat">${n0.catLabel}</div>
+      </div>
+      <div class="hero-main-body">
+        <div class="hero-main-title">${n0.title}</div>
+        <div class="hero-main-excerpt">${n0.excerpt}</div>
+        <div class="hero-meta"><span>${n0.author}</span><span class="sep"></span><span>${n0.date}</span></div>
+      </div>
+    </div>
+    ${n1 ? `<div class="hero-side-card" onclick="openArticle(${n1.id})">
+      <div class="hero-side-img" style="background:${catColor(n1.cat)}">
+        ${n1.image ? `<img src="${n1.image}" style="width:100%;height:100%;object-fit:cover;">` : `<div style="display:flex;align-items:center;justify-content:center;height:100%;font-size:50px;opacity:0.3;">${catEmoji(n1.cat)}</div>`}
+        <div class="hero-badge-cat">${n1.catLabel}</div>
+      </div>
+      <div class="hero-side-body">
+        <div class="side-cat">${n1.catLabel}</div>
+        <div class="side-title">${n1.title}</div>
+        <div class="side-time">${n1.date}</div>
+      </div>
+    </div>` : ''}
+    ${n2 ? `<div class="hero-side-card" onclick="openArticle(${n2.id})">
+      <div class="hero-side-img" style="background:${catColor(n2.cat)}">
+        ${n2.image ? `<img src="${n2.image}" style="width:100%;height:100%;object-fit:cover;">` : `<div style="display:flex;align-items:center;justify-content:center;height:100%;font-size:50px;opacity:0.3;">${catEmoji(n2.cat)}</div>`}
+        <div class="hero-badge-cat">${n2.catLabel}</div>
+      </div>
+      <div class="hero-side-body">
+        <div class="side-cat">${n2.catLabel}</div>
+        <div class="side-title">${n2.title}</div>
+        <div class="side-time">${n2.date}</div>
+      </div>
+    </div>` : ''}
+  </div>`;
+}
+
+// ============ RENDER TRENDING ============
+function renderTrending() {
+  const list = document.getElementById('trendingList');
+  if (!list) return;
+  if (!localNews.length) {
+    list.innerHTML = '<div style="padding:16px;font-size:14px;color:var(--text-mute);text-align:center;">ยังไม่มีข่าวค่ะ</div>';
+    return;
+  }
+  list.innerHTML = localNews.slice(0,5).map((n,i) => `
+    <div class="sidebar-item" onclick="openArticle(${n.id})">
+      <span class="sidebar-num">${i+1}</span>
+      <div>
+        <div class="sidebar-item-text">${n.title.length>50?n.title.slice(0,50)+'…':n.title}</div>
+        <div class="sidebar-item-time">${n.date}</div>
+      </div>
+    </div>`).join('');
+}
+
 // ============ RENDER NEWS ============
 function renderNews(filter='all') {
   const list = $('newsList');
@@ -1765,6 +1659,8 @@ function renderNews(filter='all') {
     </div>
   `).join('');
   setTimeout(() => { document.querySelectorAll('.reveal').forEach(el => el.classList.add('visible')); }, 50);
+  renderHero();
+  renderTrending();
 }
 
 function catColor(cat) {
