@@ -1581,7 +1581,11 @@ function renderHero() {
   if (!sec) return;
   if (!localNews.length) { sec.style.display='none'; return; }
   sec.style.display = 'block';
-  const n0 = localNews[0], n1 = localNews[1], n2 = localNews[2];
+  // Pinned news first, then latest
+  const pinned = localNews.filter(n => n.pinned);
+  const rest = localNews.filter(n => !n.pinned);
+  const ordered = [...pinned, ...rest];
+  const n0 = ordered[0], n1 = ordered[1], n2 = ordered[2];
   sec.innerHTML = `<div class="hero-grid">
     <div class="hero-main" onclick="openArticle(${n0.id})" style="cursor:pointer;">
       <div class="hero-main-img" style="background:${catColor(n0.cat)}">
@@ -1619,6 +1623,17 @@ function renderHero() {
   </div>`;
 }
 
+// ============ PIN NEWS ============
+function togglePin(id) {
+  const idx = localNews.findIndex(n => n.id === id);
+  if (idx === -1) return;
+  localNews[idx].pinned = !localNews[idx].pinned;
+  localStorage.setItem('sumdaysNews', JSON.stringify(localNews));
+  renderAdminTab('news');
+  renderNews();
+  toast(localNews[idx].pinned ? '📌 ปักหมุดหน้าแรกแล้วค่ะ' : 'เอาออกจากหน้าแรกแล้วค่ะ', 'success');
+}
+
 // ============ RENDER TRENDING ============
 function renderTrending() {
   const list = document.getElementById('trendingList');
@@ -1641,7 +1656,12 @@ function renderTrending() {
 function renderNews(filter='all') {
   const list = $('newsList');
   if (!list) return;
-  const items = filter === 'all' ? localNews : localNews.filter(n => n.cat === filter);
+  let items = filter === 'all' ? localNews : localNews.filter(n => n.cat === filter);
+  if (filter === 'all') {
+    const pinned = items.filter(n => n.pinned);
+    const rest = items.filter(n => !n.pinned);
+    items = [...pinned, ...rest];
+  }
   list.innerHTML = items.map((n, i) => `
     <div class="news-card${i===0?' important':''} reveal" onclick="openArticle(${n.id})" style="animation-delay:${i*0.06}s">
       <div class="news-card-img" style="background:${catColor(n.cat)}">
@@ -1784,7 +1804,7 @@ function renderNewsTable() {
             <th>หมวด</th>
             <th style="min-width:240px;">หัวข้อข่าว</th>
             <th>วันที่</th>
-            <th>สถานะ</th>
+            <th>หน้าแรก</th>
             <th></th>
           </tr>
         </thead>
@@ -1795,7 +1815,12 @@ function renderNewsTable() {
               <td><span style="font-size:12px;font-weight:700;color:var(--accent)">${n.catLabel}</span></td>
               <td style="font-weight:500;">${n.title.length > 60 ? n.title.slice(0,60)+'…' : n.title}</td>
               <td>${n.date}</td>
-              <td><span class="status-pill status-published">เผยแพร่</span></td>
+
+              <td>
+                <button onclick="togglePin(${n.id})" style="background:${n.pinned?'#F59E0B':'var(--paper)'};color:${n.pinned?'#fff':'var(--text-mute)'};border:1.5px solid ${n.pinned?'#F59E0B':'var(--border)'};border-radius:8px;padding:5px 12px;font-size:13px;font-weight:700;cursor:pointer;font-family:inherit;transition:all 0.2s;">
+                  ${n.pinned ? '📌 ปักหมุด' : '📌 ปักหมุด'}
+                </button>
+              </td>
               <td><div style="display:flex;gap:6px;">
                 <button class="btn btn-secondary btn-sm" onclick="editNews(${n.id})">แก้ไข</button>
                 <button class="btn btn-sm" style="background:var(--accent-soft);color:var(--accent);font-size:13px;padding:6px 10px;border-radius:8px;" onclick="deleteNews(${n.id})">ลบ</button>
