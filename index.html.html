@@ -1,0 +1,2358 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>sumdays — ข่าวสารเพื่อทุกวัน</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Thai+Looped:wght@300;400;500;600;700&family=Sarabun:ital,wght@0,400;0,500;0,600;0,700;1,400&family=Noto+Serif+Thai:wght@400;600;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --white: #FFFFFF;
+  --off-white: #FAF8F4;
+  --paper: #F5F0E8;
+  --black: #1C1814;
+  --dark: #2C2620;
+  --ink: #3D3530;
+  --text: #2A2318;
+  --text-soft: #4A4038;
+  --text-mute: #8A7E76;
+  --border: #DDD6CC;
+  --border-strong: #BFB5A8;
+  --accent: #C04A1A;
+  --accent-dark: #8A3010;
+  --accent-soft: #FBE8DC;
+  --accent-mid: #D45520;
+  --gold: #9A6E08;
+  --gold-soft: #FDF2D0;
+  --blue: #1A4080;
+  --blue-soft: #E4EBF7;
+  --green: #155830;
+  --green-soft: #DFF0E8;
+  --shadow-sm: 0 2px 8px rgba(0,0,0,0.06);
+  --shadow-md: 0 6px 24px rgba(0,0,0,0.10);
+  --shadow-lg: 0 12px 48px rgba(0,0,0,0.12);
+  --radius: 14px;
+  --radius-sm: 10px;
+  --radius-lg: 20px;
+  --font-base: 19px;
+  --font-scale: 1;
+}
+[data-theme="dark"] {
+  --white: #1E1A17;
+  --off-white: #231F1B;
+  --paper: #2A2520;
+  --black: #F5F0EB;
+  --dark: #EDE8E2;
+  --ink: #D8D0C8;
+  --text: #EDE8E2;
+  --text-soft: #B8AFA8;
+  --text-mute: #7A7068;
+  --border: #3D3830;
+  --border-strong: #5C5448;
+  --accent-soft: #3D1A10;
+  --gold-soft: #2A2010;
+  --blue-soft: #101A2A;
+  --green-soft: #0A1F15;
+}
+* { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+html { scroll-behavior: smooth; }
+body {
+  background: var(--off-white);
+  color: var(--text);
+  font-family: 'IBM Plex Sans Thai Looped', 'Sarabun', sans-serif;
+  font-size: calc(var(--font-base) * var(--font-scale));
+  line-height: 1.8;
+  -webkit-font-smoothing: antialiased;
+  overflow-x: hidden;
+  transition: background 0.3s, color 0.3s;
+}
+a { color: inherit; text-decoration: none; }
+button { font: inherit; cursor: pointer; border: none; background: none; font-family: inherit; }
+img { max-width: 100%; display: block; object-fit: cover; }
+.container { width: 100%; max-width: 1200px; margin: 0 auto; padding: 0 24px; }
+
+/* ============ TOPBAR ============ */
+.topbar {
+  background: var(--accent);
+  color: #fff;
+  padding: 6px 0;
+  font-size: calc(13px * var(--font-scale));
+  font-weight: 500;
+  letter-spacing: 0.01em;
+}
+.topbar-inner {
+  display: flex; align-items: center; justify-content: space-between;
+  max-width: 1200px; margin: 0 auto; padding: 0 24px;
+  gap: 12px; flex-wrap: wrap;
+}
+.topbar-date { opacity: 0.9; }
+.topbar-links { display: flex; gap: 16px; }
+.topbar-links a { opacity: 0.85; transition: opacity 0.2s; }
+.topbar-links a:hover { opacity: 1; }
+
+/* ============ NAV ============ */
+.nav {
+  position: sticky; top: 0; z-index: 100;
+  background: rgba(255,255,255,0.96);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border-bottom: 2px solid var(--accent);
+  transition: background 0.3s;
+}
+[data-theme="dark"] .nav { background: rgba(30,26,23,0.96); }
+.nav-inner {
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 0 24px; max-width: 1200px; margin: 0 auto;
+  height: 72px; gap: 16px;
+}
+.logo {
+  display: flex; align-items: center; gap: 12px;
+  flex-shrink: 0;
+}
+.logo-mark {
+  width: 44px; height: 44px;
+  background: var(--accent);
+  border-radius: 10px;
+  display: flex; align-items: center; justify-content: center;
+  color: #fff;
+  font-family: 'Noto Serif Thai', serif;
+  font-weight: 700;
+  font-size: 20px;
+}
+.logo-text {
+  display: flex; flex-direction: column;
+}
+.logo-name {
+  font-family: 'Noto Serif Thai', serif;
+  font-weight: 700;
+  font-size: calc(22px * var(--font-scale));
+  letter-spacing: -0.01em;
+  line-height: 1;
+  color: var(--black);
+}
+.logo-tagline {
+  font-size: calc(11px * var(--font-scale));
+  color: var(--text-mute);
+  letter-spacing: 0.02em;
+}
+.nav-cats {
+  display: flex; gap: 2px; align-items: center;
+  flex-wrap: nowrap;
+  overflow-x: auto;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+  flex: 1;
+  min-width: 0;
+}
+.nav-cats::-webkit-scrollbar { display: none; }
+.nav-cat {
+  padding: 7px 12px;
+  font-size: calc(13px * var(--font-scale));
+  color: var(--text-soft);
+  font-weight: 500;
+  border-radius: 8px;
+  transition: all 0.2s;
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+.nav-cat:hover, .nav-cat.active { color: var(--accent); background: var(--accent-soft); }
+.nav-controls { display: flex; align-items: center; gap: 8px; flex-shrink: 0; }
+.ctrl-btn {
+  width: 40px; height: 40px;
+  border-radius: 10px;
+  background: var(--paper);
+  border: 1.5px solid var(--border);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 16px;
+  color: var(--text-soft);
+  transition: all 0.2s;
+  flex-shrink: 0;
+}
+.ctrl-btn:hover { background: var(--accent-soft); color: var(--accent); border-color: var(--accent); }
+.ctrl-btn.active { background: var(--accent); color: #fff; border-color: var(--accent); }
+.font-size-controls {
+  display: flex; align-items: center; gap: 4px;
+  background: var(--paper);
+  border: 1.5px solid var(--border);
+  border-radius: 10px;
+  padding: 4px;
+}
+.font-btn {
+  padding: 4px 10px;
+  border-radius: 7px;
+  font-weight: 600;
+  transition: all 0.2s;
+  color: var(--text-soft);
+}
+.font-btn:hover, .font-btn.active { background: var(--accent); color: #fff; }
+.font-btn.sm { font-size: 13px; }
+.font-btn.md { font-size: 16px; }
+.font-btn.lg { font-size: 19px; }
+
+/* ============ BREAKING TICKER ============ */
+.breaking-bar {
+  background: var(--gold-soft);
+  border-bottom: 1px solid var(--border);
+  padding: 10px 0;
+  overflow: hidden;
+}
+.breaking-inner {
+  max-width: 1200px; margin: 0 auto; padding: 0 24px;
+  display: flex; align-items: center; gap: 16px;
+}
+.breaking-label {
+  background: var(--gold);
+  color: #fff;
+  font-size: calc(12px * var(--font-scale));
+  font-weight: 700;
+  padding: 3px 12px;
+  border-radius: 999px;
+  white-space: nowrap;
+  flex-shrink: 0;
+  letter-spacing: 0.04em;
+}
+.ticker-wrap { overflow: hidden; flex: 1; }
+.ticker-track {
+  display: flex; gap: 40px;
+  animation: ticker 30s linear infinite;
+  white-space: nowrap;
+}
+.ticker-track:hover { animation-play-state: paused; }
+.ticker-item {
+  font-size: calc(14px * var(--font-scale));
+  color: var(--ink);
+  display: flex; align-items: center; gap: 8px;
+  cursor: pointer;
+  transition: color 0.2s;
+}
+.ticker-item:hover { color: var(--accent); }
+.ticker-dot { width: 4px; height: 4px; background: var(--gold); border-radius: 50%; flex-shrink: 0; }
+@keyframes ticker { 0% { transform: translateX(0); } 100% { transform: translateX(-50%); } }
+
+/* ============ HERO / FEATURED ============ */
+.hero-section { padding: 32px 0; }
+.hero-grid {
+  display: grid;
+  grid-template-columns: 1.6fr 1fr;
+  grid-template-rows: auto auto;
+  gap: 20px;
+}
+@media (max-width: 900px) { .hero-grid { grid-template-columns: 1fr; } }
+.hero-main {
+  grid-row: 1 / 3;
+  position: relative;
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  background: var(--paper);
+  box-shadow: var(--shadow-md);
+  cursor: pointer;
+  transition: transform 0.3s, box-shadow 0.3s;
+}
+.hero-main:hover { transform: translateY(-4px); box-shadow: var(--shadow-lg); }
+.hero-main-img {
+  width: 100%; height: 420px;
+  background: linear-gradient(135deg, #D85A30 0%, #9E2A07 100%);
+  position: relative;
+  overflow: hidden;
+}
+.hero-main-img img { width: 100%; height: 100%; object-fit: cover; }
+.hero-main-img-placeholder {
+  width: 100%; height: 100%;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 80px; opacity: 0.3;
+}
+.hero-badge-cat {
+  position: absolute; top: 16px; left: 16px;
+  background: var(--accent);
+  color: #fff;
+  font-size: calc(12px * var(--font-scale));
+  font-weight: 700;
+  padding: 5px 14px;
+  border-radius: 999px;
+  letter-spacing: 0.03em;
+}
+.hero-main-body { padding: 24px 28px 28px; }
+.hero-main-title {
+  font-family: 'Noto Serif Thai', serif;
+  font-weight: 700;
+  font-size: calc(26px * var(--font-scale));
+  line-height: 1.35;
+  margin-bottom: 12px;
+  color: var(--black);
+}
+.hero-main-excerpt {
+  font-size: calc(15px * var(--font-scale));
+  color: var(--text-soft);
+  line-height: 1.7;
+  margin-bottom: 16px;
+}
+.hero-meta {
+  display: flex; align-items: center; gap: 12px;
+  font-size: calc(13px * var(--font-scale));
+  color: var(--text-mute);
+}
+.hero-meta .sep { width: 3px; height: 3px; background: var(--border-strong); border-radius: 50%; }
+
+.hero-side-card {
+  background: var(--white);
+  border: 1.5px solid var(--border);
+  border-radius: var(--radius);
+  overflow: hidden;
+  cursor: pointer;
+  transition: all 0.25s;
+  display: flex; flex-direction: column;
+}
+.hero-side-card:hover { border-color: var(--accent); transform: translateY(-2px); box-shadow: var(--shadow-sm); }
+.hero-side-img {
+  height: 160px;
+  background: linear-gradient(135deg, #1A4A8A 0%, #0C2A5A 100%);
+  position: relative;
+  overflow: hidden;
+  flex-shrink: 0;
+}
+.hero-side-img img { width: 100%; height: 100%; object-fit: cover; }
+.hero-side-body { padding: 16px 18px 20px; flex: 1; display: flex; flex-direction: column; }
+.side-cat {
+  font-size: calc(11px * var(--font-scale));
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  color: var(--accent);
+  margin-bottom: 8px;
+}
+.side-title {
+  font-family: 'Noto Serif Thai', serif;
+  font-weight: 600;
+  font-size: calc(17px * var(--font-scale));
+  line-height: 1.4;
+  color: var(--black);
+  flex: 1;
+}
+.side-time {
+  font-size: calc(12px * var(--font-scale));
+  color: var(--text-mute);
+  margin-top: 10px;
+}
+
+/* ============ SECTION HEADER ============ */
+.section-header {
+  display: flex; align-items: center; justify-content: space-between;
+  margin-bottom: 20px; padding-bottom: 12px;
+  border-bottom: 2px solid var(--border);
+}
+.section-title {
+  font-family: 'Noto Serif Thai', serif;
+  font-weight: 700;
+  font-size: calc(20px * var(--font-scale));
+  color: var(--black);
+  display: flex; align-items: center; gap: 10px;
+}
+.section-title-line {
+  width: 4px; height: 22px;
+  background: var(--accent);
+  border-radius: 2px;
+  flex-shrink: 0;
+}
+.section-more {
+  font-size: calc(14px * var(--font-scale));
+  color: var(--accent);
+  font-weight: 600;
+  display: flex; align-items: center; gap: 4px;
+  transition: gap 0.2s;
+}
+.section-more:hover { gap: 8px; }
+
+/* ============ MAIN CONTENT AREA ============ */
+.main-layout {
+  display: grid;
+  grid-template-columns: 1fr 320px;
+  gap: 32px;
+  padding: 32px 0 48px;
+}
+@media (max-width: 960px) { .main-layout { grid-template-columns: 1fr; } }
+
+/* NEWS LIST */
+.news-list { display: flex; flex-direction: column; gap: 20px; }
+.news-card {
+  background: var(--white);
+  border: 1.5px solid var(--border);
+  border-radius: var(--radius);
+  overflow: hidden;
+  display: flex;
+  cursor: pointer;
+  transition: all 0.25s;
+}
+.news-card:hover { border-color: var(--accent); transform: translateX(4px); box-shadow: var(--shadow-sm); }
+.news-card-img {
+  width: 180px; height: 140px;
+  flex-shrink: 0;
+  background: linear-gradient(135deg, #3D3530 0%, #2C2620 100%);
+  position: relative; overflow: hidden;
+}
+.news-card-img img { width: 100%; height: 100%; object-fit: cover; }
+.news-card-body {
+  flex: 1; padding: 16px 20px;
+  display: flex; flex-direction: column; justify-content: space-between;
+}
+.news-card-cat {
+  font-size: calc(11px * var(--font-scale));
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  color: var(--blue);
+  margin-bottom: 8px;
+}
+.news-card-title {
+  font-family: 'Noto Serif Thai', serif;
+  font-weight: 600;
+  font-size: calc(17px * var(--font-scale));
+  line-height: 1.4;
+  color: var(--black);
+  margin-bottom: 8px;
+}
+.news-card-excerpt {
+  font-size: calc(14px * var(--font-scale));
+  color: var(--text-soft);
+  line-height: 1.6;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+.news-card-footer {
+  display: flex; align-items: center; justify-content: space-between;
+  margin-top: 12px;
+}
+.news-card-time {
+  font-size: calc(12px * var(--font-scale));
+  color: var(--text-mute);
+}
+.news-card-share {
+  font-size: calc(12px * var(--font-scale));
+  color: var(--text-mute);
+  padding: 4px 10px;
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  transition: all 0.2s;
+}
+.news-card-share:hover { color: var(--accent); border-color: var(--accent); }
+
+/* IMPORTANT NEWS (large) */
+.news-card.important {
+  flex-direction: column;
+}
+.news-card.important .news-card-img {
+  width: 100%; height: 240px;
+}
+.news-card.important .news-card-title {
+  font-size: calc(20px * var(--font-scale));
+}
+
+/* GOV BANNER */
+.gov-banner {
+  background: linear-gradient(135deg, var(--blue) 0%, #0C2A5A 100%);
+  border-radius: var(--radius);
+  padding: 24px 28px;
+  color: #fff;
+  margin-bottom: 20px;
+  position: relative;
+  overflow: hidden;
+}
+.gov-banner::before {
+  content: '🏛️';
+  position: absolute;
+  right: 20px; top: 50%;
+  transform: translateY(-50%);
+  font-size: 60px; opacity: 0.15;
+}
+.gov-banner-label {
+  font-size: calc(11px * var(--font-scale));
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  opacity: 0.8;
+  margin-bottom: 8px;
+}
+.gov-banner-title {
+  font-family: 'Noto Serif Thai', serif;
+  font-weight: 700;
+  font-size: calc(18px * var(--font-scale));
+  line-height: 1.4;
+  margin-bottom: 12px;
+}
+.gov-banner-items { display: flex; flex-direction: column; gap: 8px; }
+.gov-item {
+  display: flex; align-items: center; gap: 8px;
+  font-size: calc(14px * var(--font-scale));
+  opacity: 0.9;
+  cursor: pointer;
+  padding: 6px 0;
+  border-bottom: 1px solid rgba(255,255,255,0.1);
+  transition: opacity 0.2s;
+}
+.gov-item:last-child { border-bottom: none; }
+.gov-item:hover { opacity: 1; }
+.gov-item-arrow { margin-left: auto; opacity: 0.6; font-size: 12px; }
+
+/* ============ SIDEBAR ============ */
+.sidebar { display: flex; flex-direction: column; gap: 24px; }
+
+.sidebar-block {
+  background: var(--white);
+  border: 1.5px solid var(--border);
+  border-radius: var(--radius);
+  overflow: hidden;
+}
+.sidebar-head {
+  background: var(--paper);
+  padding: 12px 16px;
+  border-bottom: 1px solid var(--border);
+  font-family: 'Noto Serif Thai', serif;
+  font-weight: 700;
+  font-size: calc(15px * var(--font-scale));
+  color: var(--black);
+  display: flex; align-items: center; gap: 8px;
+}
+.sidebar-list { }
+.sidebar-item {
+  padding: 14px 16px;
+  border-bottom: 1px solid var(--border);
+  cursor: pointer;
+  transition: background 0.2s;
+  display: flex; align-items: flex-start; gap: 10px;
+}
+.sidebar-item:last-child { border-bottom: none; }
+.sidebar-item:hover { background: var(--accent-soft); }
+.sidebar-num {
+  font-family: 'Noto Serif Thai', serif;
+  font-weight: 700;
+  font-size: calc(18px * var(--font-scale));
+  color: var(--accent);
+  min-width: 28px;
+  line-height: 1;
+  margin-top: 2px;
+}
+.sidebar-item-text {
+  font-size: calc(14px * var(--font-scale));
+  color: var(--text);
+  line-height: 1.5;
+  font-weight: 500;
+}
+.sidebar-item-time {
+  font-size: calc(12px * var(--font-scale));
+  color: var(--text-mute);
+  margin-top: 4px;
+}
+
+/* SERVICE BOX */
+.service-box {
+  background: var(--green-soft);
+  border: 1.5px solid #A8D4BC;
+  border-radius: var(--radius);
+  padding: 20px;
+}
+.service-box-title {
+  font-family: 'Noto Serif Thai', serif;
+  font-weight: 700;
+  font-size: calc(16px * var(--font-scale));
+  color: var(--green);
+  margin-bottom: 4px;
+  display: flex; align-items: center; gap: 8px;
+}
+.service-box-sub {
+  font-size: calc(13px * var(--font-scale));
+  color: var(--text-soft);
+  margin-bottom: 16px;
+}
+.service-links { display: flex; flex-direction: column; gap: 8px; }
+.service-link {
+  background: var(--white);
+  border: 1px solid #A8D4BC;
+  border-radius: 8px;
+  padding: 10px 14px;
+  font-size: calc(14px * var(--font-scale));
+  font-weight: 500;
+  color: var(--green);
+  display: flex; align-items: center; gap: 8px;
+  transition: all 0.2s;
+  cursor: pointer;
+  text-decoration: none;
+}
+.service-link:hover { background: var(--green); color: #fff; }
+.service-link-icon { font-size: 16px; }
+
+/* ACCESSIBILITY PANEL */
+.access-panel {
+  background: var(--gold-soft);
+  border: 1.5px solid #D4A820;
+  border-radius: var(--radius);
+  padding: 20px;
+}
+.access-title {
+  font-family: 'Noto Serif Thai', serif;
+  font-weight: 700;
+  font-size: calc(15px * var(--font-scale));
+  color: var(--gold);
+  margin-bottom: 16px;
+  display: flex; align-items: center; gap: 8px;
+}
+.access-row { display: flex; align-items: center; justify-content: space-between; gap: 12px; margin-bottom: 12px; }
+.access-label {
+  font-size: calc(14px * var(--font-scale));
+  color: var(--text-soft);
+  font-weight: 500;
+}
+.access-btns { display: flex; gap: 4px; }
+.access-btn {
+  padding: 6px 12px;
+  border-radius: 6px;
+  font-size: calc(13px * var(--font-scale));
+  font-weight: 600;
+  border: 1.5px solid var(--border-strong);
+  background: var(--white);
+  color: var(--text);
+  transition: all 0.2s;
+}
+.access-btn:hover { border-color: var(--gold); color: var(--gold); }
+.access-btn.active { background: var(--gold); color: #fff; border-color: var(--gold); }
+.toggle-row {
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 10px 0; border-top: 1px solid rgba(0,0,0,0.06);
+}
+.toggle-label {
+  font-size: calc(14px * var(--font-scale));
+  color: var(--text-soft);
+  font-weight: 500;
+}
+.toggle {
+  width: 44px; height: 24px;
+  background: var(--border-strong);
+  border-radius: 999px;
+  position: relative;
+  cursor: pointer;
+  transition: background 0.2s;
+  flex-shrink: 0;
+}
+.toggle.on { background: var(--gold); }
+.toggle::after {
+  content: '';
+  position: absolute;
+  width: 18px; height: 18px;
+  background: #fff;
+  border-radius: 50%;
+  top: 3px; left: 3px;
+  transition: left 0.2s;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+}
+.toggle.on::after { left: 23px; }
+
+/* ============ CATEGORIES ROW ============ */
+.category-section { padding: 16px 0 32px; }
+.cat-chips { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 16px; }
+.cat-chip {
+  padding: 10px 20px;
+  border: 1.5px solid var(--border);
+  border-radius: 999px;
+  font-size: calc(14px * var(--font-scale));
+  font-weight: 600;
+  color: var(--text-soft);
+  background: var(--white);
+  cursor: pointer;
+  transition: all 0.2s;
+  display: flex; align-items: center; gap: 6px;
+}
+.cat-chip:hover, .cat-chip.active {
+  background: var(--accent);
+  border-color: var(--accent);
+  color: #fff;
+}
+
+/* ============ ARTICLE MODAL ============ */
+.overlay {
+  position: fixed; inset: 0; z-index: 200;
+  background: var(--off-white);
+  display: flex; align-items: flex-start; justify-content: center;
+  padding: 0;
+  opacity: 0; pointer-events: none;
+  transition: opacity 0.3s;
+  overflow-y: auto;
+}
+.overlay.show { opacity: 1; pointer-events: all; }
+.article-modal {
+  background: var(--white);
+  border-radius: 0;
+  max-width: 100%; width: 100%;
+  min-height: 100vh;
+  box-shadow: none;
+  transform: translateY(20px);
+  transition: transform 0.3s;
+  position: relative;
+}
+.overlay.show .article-modal { transform: translateY(0); }
+.article-back-bar {
+  position: sticky; top: 0; z-index: 10;
+  background: var(--white);
+  border-bottom: 1px solid var(--border);
+  padding: 12px 20px;
+  display: flex; align-items: center; gap: 12px;
+}
+.article-back-btn {
+  display: inline-flex; align-items: center; gap: 8px;
+  background: var(--accent);
+  color: #fff;
+  border: none;
+  border-radius: 10px;
+  padding: 10px 20px;
+  font-size: calc(16px * var(--font-scale));
+  font-weight: 700;
+  cursor: pointer;
+  font-family: inherit;
+  transition: background 0.2s;
+}
+.article-back-btn:hover { background: var(--accent-dark); }
+.article-back-title {
+  font-size: calc(14px * var(--font-scale));
+  color: var(--text-mute);
+  white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+}
+.article-close {
+  display: none;
+}
+.article-hero-img {
+  width: 100%; height: 320px;
+  border-radius: 0;
+  overflow: hidden;
+  background: linear-gradient(135deg, #D85A30 0%, #9E2A07 100%);
+}
+.article-body {
+  padding: 28px 36px 36px;
+  max-width: 800px;
+  margin: 0 auto;
+}
+.article-hero-img {
+  width: 100%; height: 280px;
+  border-radius: var(--radius-lg) var(--radius-lg) 0 0;
+  overflow: hidden;
+  background: linear-gradient(135deg, #D85A30 0%, #9E2A07 100%);
+}
+.article-hero-img img { width: 100%; height: 100%; object-fit: cover; }
+.article-body { padding: 28px 36px 36px; }
+.article-cat {
+  font-size: calc(12px * var(--font-scale));
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  color: var(--accent);
+  margin-bottom: 10px;
+}
+.article-title {
+  font-family: 'Noto Serif Thai', serif;
+  font-weight: 700;
+  font-size: calc(26px * var(--font-scale));
+  line-height: 1.35;
+  color: var(--black);
+  margin-bottom: 12px;
+}
+.article-meta {
+  display: flex; align-items: center; gap: 10px;
+  font-size: calc(13px * var(--font-scale));
+  color: var(--text-mute);
+  margin-bottom: 20px;
+  padding-bottom: 20px;
+  border-bottom: 1px solid var(--border);
+}
+.article-text {
+  font-size: calc(17px * var(--font-scale));
+  line-height: 1.9;
+  color: var(--text);
+}
+.article-text p { margin-bottom: 16px; }
+.font-controls-bar {
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 12px 16px;
+  background: var(--paper);
+  border-top: 1px solid var(--border);
+  border-radius: 0 0 var(--radius-lg) var(--radius-lg);
+}
+.font-bar-label { font-size: calc(13px * var(--font-scale)); color: var(--text-mute); }
+.font-bar-btns { display: flex; gap: 6px; }
+.font-bar-btn {
+  padding: 5px 12px;
+  border-radius: 6px;
+  border: 1.5px solid var(--border);
+  font-weight: 600;
+  color: var(--text-soft);
+  transition: all 0.2s;
+}
+.font-bar-btn:hover, .font-bar-btn.active { background: var(--accent); color: #fff; border-color: var(--accent); }
+
+/* ============ ADMIN PANEL ============ */
+.admin-overlay {
+  position: fixed; inset: 0; z-index: 300;
+  background: rgba(0,0,0,0.7);
+  display: flex; align-items: flex-start; justify-content: center;
+  padding: 32px 20px;
+  opacity: 0; pointer-events: none;
+  transition: opacity 0.3s;
+  overflow-y: auto;
+}
+.admin-overlay.show { opacity: 1; pointer-events: all; }
+.admin-panel {
+  background: var(--white);
+  border-radius: var(--radius-lg);
+  max-width: 800px; width: 100%;
+  box-shadow: var(--shadow-lg);
+  transform: translateY(20px);
+  transition: transform 0.3s;
+}
+.admin-overlay.show .admin-panel { transform: translateY(0); }
+.admin-head {
+  padding: 24px 28px;
+  border-bottom: 1px solid var(--border);
+  display: flex; align-items: center; justify-content: space-between;
+  gap: 12px;
+}
+.admin-title {
+  font-family: 'Noto Serif Thai', serif;
+  font-weight: 700;
+  font-size: calc(20px * var(--font-scale));
+  color: var(--black);
+}
+.admin-sub {
+  font-size: calc(13px * var(--font-scale));
+  color: var(--text-mute);
+  margin-top: 2px;
+}
+.admin-close {
+  width: 36px; height: 36px;
+  background: var(--paper);
+  border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 18px; color: var(--text-soft);
+  cursor: pointer;
+  transition: all 0.2s;
+}
+.admin-close:hover { background: var(--accent); color: #fff; }
+.admin-tabs {
+  display: flex; gap: 0;
+  border-bottom: 1px solid var(--border);
+  padding: 0 28px;
+}
+.admin-tab {
+  padding: 12px 20px;
+  font-size: calc(14px * var(--font-scale));
+  font-weight: 600;
+  color: var(--text-mute);
+  border-bottom: 2px solid transparent;
+  margin-bottom: -1px;
+  transition: all 0.2s;
+}
+.admin-tab:hover { color: var(--accent); }
+.admin-tab.active { color: var(--accent); border-bottom-color: var(--accent); }
+.admin-body { padding: 24px 28px; }
+.form-group { margin-bottom: 20px; }
+.form-label {
+  display: block;
+  font-size: calc(14px * var(--font-scale));
+  font-weight: 600;
+  color: var(--text-soft);
+  margin-bottom: 6px;
+  letter-spacing: 0.01em;
+}
+.form-input, .form-select, .form-textarea {
+  width: 100%;
+  padding: 12px 14px;
+  border: 1.5px solid var(--border);
+  border-radius: 10px;
+  font-size: calc(15px * var(--font-scale));
+  font-family: inherit;
+  color: var(--text);
+  background: var(--white);
+  transition: border-color 0.2s;
+  line-height: 1.5;
+}
+.form-input:focus, .form-select:focus, .form-textarea:focus {
+  outline: none;
+  border-color: var(--accent);
+  box-shadow: 0 0 0 3px rgba(200,57,10,0.08);
+}
+.form-textarea { min-height: 120px; resize: vertical; }
+.form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+.form-hint { font-size: calc(12px * var(--font-scale)); color: var(--text-mute); margin-top: 4px; }
+
+.btn { display: inline-flex; align-items: center; justify-content: center; gap: 8px; padding: 12px 24px; border-radius: 10px; font-size: calc(15px * var(--font-scale)); font-weight: 600; transition: all 0.25s; cursor: pointer; white-space: nowrap; }
+.btn-primary { background: var(--accent); color: #fff; }
+.btn-primary:hover { background: var(--accent-dark); transform: translateY(-1px); }
+.btn-secondary { background: var(--paper); color: var(--text); border: 1.5px solid var(--border); }
+.btn-secondary:hover { border-color: var(--accent); color: var(--accent); }
+.btn-sm { padding: 8px 16px; font-size: calc(13px * var(--font-scale)); }
+.btn-block { width: 100%; }
+.btn-row { display: flex; gap: 10px; flex-wrap: wrap; }
+
+.news-table { width: 100%; border-collapse: collapse; }
+.news-table th {
+  padding: 10px 12px;
+  text-align: left;
+  font-size: calc(12px * var(--font-scale));
+  font-weight: 700;
+  color: var(--text-mute);
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  background: var(--paper);
+  border-bottom: 1px solid var(--border);
+}
+.news-table td {
+  padding: 12px 12px;
+  font-size: calc(14px * var(--font-scale));
+  border-bottom: 1px solid var(--border);
+  color: var(--text);
+  vertical-align: middle;
+}
+.news-table tr:hover td { background: var(--off-white); }
+.status-pill {
+  display: inline-block;
+  padding: 3px 10px;
+  border-radius: 999px;
+  font-size: calc(11px * var(--font-scale));
+  font-weight: 700;
+}
+.status-published { background: var(--green-soft); color: var(--green); }
+.status-draft { background: var(--gold-soft); color: var(--gold); }
+
+/* ============ FOOTER ============ */
+.footer {
+  background: #2C2620;
+  color: rgba(255,255,255,0.85);
+  padding: 48px 0 0;
+}
+[data-theme="dark"] .footer {
+  background: #1A1510;
+  color: rgba(255,255,255,0.85);
+}
+.footer-grid {
+  display: grid;
+  grid-template-columns: 1.4fr 1fr 1fr 1fr;
+  gap: 32px;
+  max-width: 1200px; margin: 0 auto; padding: 0 24px;
+}
+@media (max-width: 900px) { .footer-grid { grid-template-columns: 1fr 1fr; } }
+@media (max-width: 560px) { .footer-grid { grid-template-columns: 1fr; } }
+.footer-brand { }
+.footer-logo {
+  display: flex; align-items: center; gap: 10px;
+  margin-bottom: 14px;
+}
+.footer-logo-mark {
+  width: 40px; height: 40px;
+  background: var(--accent);
+  border-radius: 10px;
+  display: flex; align-items: center; justify-content: center;
+  font-family: 'Noto Serif Thai', serif;
+  font-weight: 700; font-size: 18px; color: #fff;
+}
+.footer-logo-name {
+  font-family: 'Noto Serif Thai', serif;
+  font-weight: 700; font-size: 22px; color: #fff !important;
+}
+.footer-desc {
+  font-size: 14px; line-height: 1.7;
+  color: rgba(255,255,255,0.65) !important;
+  margin-bottom: 20px;
+}
+.footer-col-title {
+  font-size: 12px; font-weight: 700;
+  letter-spacing: 0.07em;
+  text-transform: uppercase;
+  color: rgba(255,255,255,0.5) !important;
+  margin-bottom: 14px;
+}
+.footer-links { list-style: none; display: flex; flex-direction: column; gap: 8px; }
+.footer-links a {
+  font-size: 14px; color: rgba(255,255,255,0.75) !important;
+  transition: color 0.2s;
+}
+.footer-links a:hover { color: #E87040 !important; }
+.footer-bottom {
+  margin-top: 40px;
+  border-top: 1px solid rgba(255,255,255,0.08);
+  padding: 16px 24px;
+  max-width: 1200px; margin: 40px auto 0;
+  display: flex; align-items: center; justify-content: space-between;
+  flex-wrap: wrap; gap: 12px;
+}
+.footer-copyright {
+  font-size: 13px; color: rgba(255,255,255,0.45) !important;
+}
+.footer-admin-btn {
+  display: inline-flex; align-items: center; gap: 8px;
+  font-size: 18px; font-weight: 600;
+  color: rgba(255,255,255,0.5) !important;
+  padding: 8px 12px;
+  border: 1px solid rgba(255,255,255,0.15);
+  border-radius: 50%;
+  width: 40px; height: 40px;
+  transition: all 0.2s;
+  cursor: pointer;
+  justify-content: center;
+}
+.footer-admin-btn:hover { color: #fff !important; border-color: #C8390A; background: rgba(200,57,10,0.2); }
+
+/* ============ TOAST ============ */
+.toast-container {
+  position: fixed; bottom: 24px; right: 24px; z-index: 500;
+  display: flex; flex-direction: column; gap: 8px;
+}
+.toast {
+  background: var(--dark);
+  color: #fff;
+  padding: 14px 20px;
+  border-radius: 10px;
+  font-size: 14px;
+  font-weight: 500;
+  box-shadow: var(--shadow-lg);
+  display: flex; align-items: center; gap: 8px;
+  animation: toast-in 0.3s ease, toast-out 0.3s ease 2.5s forwards;
+}
+.toast.success { border-left: 3px solid var(--green); }
+.toast.error { border-left: 3px solid var(--accent); }
+@keyframes toast-in { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+@keyframes toast-out { to { opacity: 0; transform: translateY(10px); } }
+
+/* ============ ADMIN LOGIN ============ */
+.login-modal {
+  background: var(--white);
+  border-radius: var(--radius-lg);
+  max-width: 360px; width: 100%;
+  padding: 36px;
+  box-shadow: var(--shadow-lg);
+  text-align: center;
+}
+.login-icon { font-size: 48px; margin-bottom: 16px; }
+.login-title {
+  font-family: 'Noto Serif Thai', serif;
+  font-weight: 700;
+  font-size: calc(22px * var(--font-scale));
+  margin-bottom: 6px;
+  color: var(--black);
+}
+.login-sub { font-size: 14px; color: var(--text-mute); margin-bottom: 24px; }
+
+/* ============ DONATE BAR ============ */
+.donate-bar {
+  background: linear-gradient(135deg, #FFF8EE 0%, #FDF2D0 100%);
+  border-top: 2px solid #D4A820;
+  padding: 28px 36px;
+  max-width: 800px;
+  margin: 0 auto;
+}
+.donate-title {
+  font-family: 'Noto Serif Thai', serif;
+  font-weight: 700;
+  font-size: calc(20px * var(--font-scale));
+  color: #7A5200;
+  margin-bottom: 8px;
+}
+.donate-desc {
+  font-size: calc(15px * var(--font-scale));
+  color: var(--text-soft);
+  margin-bottom: 20px;
+  line-height: 1.7;
+}
+.donate-bank {
+  background: #fff;
+  border: 1.5px solid #D4A820;
+  border-radius: 14px;
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+.donate-bank-row {
+  display: flex; align-items: center; gap: 10px; flex-wrap: wrap;
+}
+.donate-bank-label {
+  font-size: calc(14px * var(--font-scale));
+  color: var(--text-mute);
+  min-width: 100px;
+  font-weight: 600;
+}
+.donate-bank-val {
+  font-size: calc(18px * var(--font-scale));
+  color: var(--text);
+  font-weight: 700;
+  letter-spacing: 0.04em;
+}
+.donate-toggle-btn {
+  background: var(--gold);
+  color: #fff;
+  border: none;
+  border-radius: 12px;
+  padding: 14px 28px;
+  font-size: calc(17px * var(--font-scale));
+  font-weight: 700;
+  cursor: pointer;
+  font-family: inherit;
+  width: 100%;
+  transition: all 0.2s;
+  box-shadow: 0 4px 12px rgba(154,110,8,0.25);
+}
+.donate-toggle-btn:hover { background: #7A5200; transform: translateY(-1px); }
+.donate-toggle-btn.open { background: #7A5200; }
+.donate-copy-btn {
+  background: var(--gold-soft);
+  border: 1.5px solid #D4A820;
+  color: #7A5200;
+  border-radius: 8px;
+  padding: 6px 14px;
+  font-size: calc(14px * var(--font-scale));
+  font-weight: 700;
+  cursor: pointer;
+  font-family: inherit;
+  transition: all 0.2s;
+  margin-left: auto;
+}
+.donate-copy-btn:hover { background: #D4A820; color: #fff; }
+
+/* ARTICLE SHARE BTNS */
+.article-share-btns {
+  display: flex; gap: 8px; flex-wrap: wrap; margin-top: 10px;
+}
+
+/* GREETING BANNER */
+.greeting-banner {
+  background: linear-gradient(135deg, #FFF8E8 0%, #FDF4D4 100%);
+  border-bottom: 1px solid #E8D8A0;
+  padding: 14px 0;
+}
+.greeting-inner {
+  max-width: 1200px; margin: 0 auto; padding: 0 24px;
+  display: flex; align-items: center; gap: 16px;
+}
+.greeting-icon { font-size: 32px; flex-shrink: 0; }
+.greeting-text {
+  font-family: 'Noto Serif Thai', serif;
+  font-weight: 700;
+  font-size: calc(16px * var(--font-scale));
+  color: #4A3200;
+  line-height: 1.6;
+}
+.greeting-sub {
+  font-size: calc(13px * var(--font-scale));
+  color: #8A6A20;
+  margin-top: 4px;
+  font-style: italic;
+}
+[data-theme="dark"] .greeting-banner {
+  background: linear-gradient(135deg, #2A2010 0%, #221A08 100%);
+  border-bottom-color: #4A3A10;
+}
+[data-theme="dark"] .greeting-text { color: #E0C060; }
+[data-theme="dark"] .greeting-sub { color: #B09040; }
+
+/* INFO MODAL */
+.info-overlay {
+  position: fixed; inset: 0; z-index: 250;
+  background: rgba(0,0,0,0.6);
+  display: flex; align-items: center; justify-content: center;
+  padding: 24px;
+  opacity: 0; pointer-events: none;
+  transition: opacity 0.3s;
+}
+.info-overlay.show { opacity: 1; pointer-events: all; }
+.info-modal {
+  background: var(--white);
+  border-radius: var(--radius-lg);
+  max-width: 600px; width: 100%;
+  max-height: 80vh;
+  overflow-y: auto;
+  box-shadow: var(--shadow-lg);
+  padding: 36px;
+  position: relative;
+}
+.info-close {
+  position: absolute; top: 16px; right: 16px;
+  width: 36px; height: 36px;
+  background: var(--paper);
+  border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 18px; color: var(--text-soft);
+  cursor: pointer; border: none;
+  transition: all 0.2s;
+}
+.info-close:hover { background: var(--accent); color: #fff; }
+.info-title {
+  font-family: 'Noto Serif Thai', serif;
+  font-weight: 700;
+  font-size: calc(22px * var(--font-scale));
+  color: var(--black);
+  margin-bottom: 16px;
+}
+.info-text {
+  font-size: calc(15px * var(--font-scale));
+  color: var(--text-soft);
+  line-height: 1.9;
+}
+.info-text p { margin-bottom: 14px; }
+.info-text strong { color: var(--text); }
+
+/* AD CONTACT FORM */
+.ad-form-group { margin-bottom: 16px; }
+.ad-form-label {
+  display: block;
+  font-weight: 600;
+  font-size: calc(14px * var(--font-scale));
+  color: var(--text-soft);
+  margin-bottom: 6px;
+}
+.ad-form-input, .ad-form-textarea {
+  width: 100%;
+  padding: 12px 14px;
+  border: 1.5px solid var(--border);
+  border-radius: 10px;
+  font-size: calc(15px * var(--font-scale));
+  font-family: inherit;
+  color: var(--text);
+  background: var(--white);
+  transition: border-color 0.2s;
+}
+.ad-form-input:focus, .ad-form-textarea:focus {
+  outline: none; border-color: var(--accent);
+}
+.ad-form-textarea { min-height: 100px; resize: vertical; }
+
+/* ============ RESPONSIVE ============ */
+@media (max-width: 760px) {
+  .nav-cats { display: none; }
+  .news-card { flex-direction: column; }
+  .news-card-img { width: 100%; height: 160px; }
+  .article-body { padding: 20px 20px 24px; }
+  .form-row { grid-template-columns: 1fr; }
+  .hero-grid { grid-template-columns: 1fr; }
+  .hero-main { grid-row: auto; }
+}
+
+/* reveal animation */
+.reveal { opacity: 0; transform: translateY(16px); transition: opacity 0.5s, transform 0.5s; }
+.reveal.visible { opacity: 1; transform: translateY(0); }
+</style>
+</head>
+<body>
+
+<!-- TOPBAR -->
+<div class="topbar">
+  <div class="topbar-inner">
+    <span class="topbar-date" id="topDate"></span>
+    <div class="topbar-links">
+      <a href="#">เกี่ยวกับเรา</a>
+      <a href="#">ติดต่อ</a>
+      <a href="#">ร่วมงาน</a>
+    </div>
+  </div>
+</div>
+
+<!-- NAV -->
+<nav class="nav" id="mainNav">
+  <div class="nav-inner">
+    <div class="logo" onclick="location.reload()">
+      <div class="logo-mark">S</div>
+      <div class="logo-text">
+        <span class="logo-name">sumdays</span>
+        <span class="logo-tagline">ข่าวสารเพื่อทุกวัน</span>
+      </div>
+    </div>
+    <div class="nav-cats">
+      <a class="nav-cat active" onclick="filterCat('all',this)">ทั้งหมด</a>
+      <a class="nav-cat" onclick="filterCat('gov',this)">รัฐบาล</a>
+      <a class="nav-cat" onclick="filterCat('health',this)">สุขภาพ</a>
+      <a class="nav-cat" onclick="filterCat('economy',this)">เศรษฐกิจ</a>
+      <a class="nav-cat" onclick="filterCat('social',this)">สังคม</a>
+      <a class="nav-cat" onclick="filterCat('welfare',this)">สวัสดิการ</a>
+      <a class="nav-cat" onclick="filterCat('local',this)">ท้องถิ่น</a>
+      <a class="nav-cat" onclick="filterCat('tech',this)">เทคโนโลยี</a>
+      <a class="nav-cat" onclick="filterCat('fitness',this)">ออกกำลังกาย</a>
+      <a class="nav-cat" onclick="filterCat('recipe',this)">สูตรอาหาร</a>
+      <a class="nav-cat" onclick="filterCat('selfdev',this)">พัฒนาตัวเอง</a>
+      <a class="nav-cat" onclick="filterCat('mental',this)">สุขภาพจิต</a>
+      <a class="nav-cat" onclick="filterCat('selfcare',this)">ดูแลตัวเอง</a>
+    </div>
+    <div class="nav-controls">
+      <div class="font-size-controls">
+        <button class="font-btn sm" onclick="setFont(0.9,this)" title="ตัวอักษรเล็ก">ก</button>
+        <button class="font-btn md active" onclick="setFont(1,this)" title="ตัวอักษรปกติ">ก</button>
+        <button class="font-btn lg" onclick="setFont(1.2,this)" title="ตัวอักษรใหญ่">ก</button>
+      </div>
+      <button class="ctrl-btn" onclick="toggleDark(this)" id="darkBtn" title="เปลี่ยนธีม">🌙</button>
+      <button class="ctrl-btn" onclick="toggleSearch()" title="ค้นหา">🔍</button>
+    </div>
+  </div>
+</nav>
+
+<!-- BREAKING NEWS -->
+<div class="breaking-bar">
+  <div class="breaking-inner">
+    <span class="breaking-label">ด่วน</span>
+    <div class="ticker-wrap">
+      <div class="ticker-track" id="ticker">
+        <!-- populated by renderTicker() -->
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- GREETING BANNER -->
+<div class="greeting-banner" id="greetingBanner">
+  <div class="greeting-inner">
+    <span class="greeting-icon" id="greetingIcon">🙏</span>
+    <div>
+      <div class="greeting-text" id="greetingText"></div>
+      <div class="greeting-sub" id="greetingSource"></div>
+    </div>
+  </div>
+</div>
+
+<!-- MAIN CONTAINER -->
+<div class="container">
+
+  <!-- HERO -->
+  <section class="hero-section reveal">
+    <div class="hero-grid">
+      <div class="hero-main" onclick="openArticle(0)">
+        <div class="hero-main-img">
+          <div class="hero-main-img-placeholder">🏛️</div>
+          <div class="hero-badge-cat">รัฐบาล</div>
+        </div>
+        <div class="hero-main-body">
+          <div class="hero-main-title">รัฐบาลเดินหน้า "โครงการเบี้ยผู้สูงอายุถ้วนหน้า" คาดเริ่มจ่ายในปีงบประมาณ 2569</div>
+          <div class="hero-main-excerpt">คณะรัฐมนตรีอนุมัติหลักการปรับระบบสวัสดิการผู้สูงอายุ มุ่งขยายความครอบคลุมให้ทุกคนได้รับสิทธิ ไม่ว่าจะมีรายได้เท่าใด พร้อมปรับเพิ่มอัตราเบี้ยตามช่วงอายุ</div>
+          <div class="hero-meta">
+            <span>กองบรรณาธิการ sumdays</span>
+            <span class="sep"></span>
+            <span>2 พ.ค. 2569</span>
+            <span class="sep"></span>
+            <span>อ่าน 5 นาที</span>
+          </div>
+        </div>
+      </div>
+      <div class="hero-side-card" onclick="openArticle(1)">
+        <div class="hero-side-img" style="background: linear-gradient(135deg,#1A6640,#0A3820);">
+          <div style="display:flex;align-items:center;justify-content:center;height:100%;font-size:50px;opacity:0.3;">💊</div>
+          <div class="hero-badge-cat" style="background:var(--green);">สุขภาพ</div>
+        </div>
+        <div class="hero-side-body">
+          <div class="side-cat">สุขภาพ</div>
+          <div class="side-title">5 วิธีดูแลสุขภาพสำหรับผู้สูงอายุในช่วงหน้าร้อน ที่กรมอนามัยแนะนำ</div>
+          <div class="side-time">1 พ.ค. 2569</div>
+        </div>
+      </div>
+      <div class="hero-side-card" onclick="openArticle(2)">
+        <div class="hero-side-img" style="background: linear-gradient(135deg,#B8820A,#6A4500);">
+          <div style="display:flex;align-items:center;justify-content:center;height:100%;font-size:50px;opacity:0.3;">💰</div>
+          <div class="hero-badge-cat" style="background:var(--gold);">เศรษฐกิจ</div>
+        </div>
+        <div class="hero-side-body">
+          <div class="side-cat">เศรษฐกิจ</div>
+          <div class="side-title">ธปท. ปรับลดดอกเบี้ยนโยบาย ส่งสัญญาณช่วยบรรเทาภาระลูกหนี้รายย่อย</div>
+          <div class="side-time">1 พ.ค. 2569</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- MAIN LAYOUT -->
+  <div class="main-layout">
+    <!-- NEWS FEED -->
+    <main>
+      <!-- GOV SERVICES BANNER -->
+      <div class="gov-banner reveal">
+        <div class="gov-banner-label">🏛️ บริการรัฐและสิทธิประโยชน์</div>
+        <div class="gov-banner-title">รวมข้อมูลสำคัญจากภาครัฐสำหรับผู้สูงวัย</div>
+        <div class="gov-items">
+          <div class="gov-item" onclick="openArticle(3)">
+            <span>📋 ตรวจสอบสิทธิ์บัตรทองและสวัสดิการผู้สูงอายุ 2569</span>
+            <span class="gov-item-arrow">›</span>
+          </div>
+          <div class="gov-item" onclick="openArticle(4)">
+            <span>🏥 คลินิกผู้สูงอายุ รพ. ใกล้บ้าน เปิดลงทะเบียนออนไลน์</span>
+            <span class="gov-item-arrow">›</span>
+          </div>
+          <div class="gov-item" onclick="openArticle(5)">
+            <span>💳 เงินสนับสนุนค่าครองชีพ 1,000 บาท/เดือน เช็กเงื่อนไขที่นี่</span>
+            <span class="gov-item-arrow">›</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- LATEST NEWS -->
+      <div class="section-header reveal">
+        <div class="section-title">
+          <span class="section-title-line"></span>
+          ข่าวล่าสุด
+        </div>
+        <a class="section-more" href="#">ดูทั้งหมด →</a>
+      </div>
+
+      <div class="news-list" id="newsList">
+        <!-- populated by JS -->
+      </div>
+    </main>
+
+    <!-- SIDEBAR -->
+    <aside class="sidebar">
+      <!-- ACCESSIBILITY -->
+      <div class="access-panel reveal">
+        <div class="access-title">⚙️ ปรับการแสดงผล</div>
+        <div class="access-row">
+          <span class="access-label">ขนาดตัวอักษร</span>
+          <div class="access-btns">
+            <button class="access-btn" onclick="setFont(0.9,null)">เล็ก</button>
+            <button class="access-btn active" onclick="setFont(1,null)">ปกติ</button>
+            <button class="access-btn" onclick="setFont(1.2,null)">ใหญ่</button>
+          </div>
+        </div>
+        <div class="toggle-row">
+          <span class="toggle-label">โหมดกลางคืน</span>
+          <div class="toggle" id="darkToggle" onclick="toggleDark(null)"></div>
+        </div>
+        <div class="toggle-row">
+          <span class="toggle-label">ตัวอักษรสูงขึ้น</span>
+          <div class="toggle" id="highContrastToggle" onclick="toggleHighContrast()"></div>
+        </div>
+      </div>
+
+      <!-- TRENDING -->
+      <div class="sidebar-block reveal">
+        <div class="sidebar-head">🔥 ข่าวยอดนิยมวันนี้</div>
+        <div class="sidebar-list">
+          <div class="sidebar-item" onclick="openArticle(0)">
+            <span class="sidebar-num">1</span>
+            <div>
+              <div class="sidebar-item-text">เบี้ยผู้สูงอายุถ้วนหน้า — อัตราใหม่และวิธีลงทะเบียน</div>
+              <div class="sidebar-item-time">2 ชั่วโมงที่แล้ว</div>
+            </div>
+          </div>
+          <div class="sidebar-item" onclick="openArticle(1)">
+            <span class="sidebar-num">2</span>
+            <div>
+              <div class="sidebar-item-text">วัคซีนไข้หวัดใหญ่ฟรี สำหรับผู้สูงอายุ — เช็กสิทธิ์ที่นี่</div>
+              <div class="sidebar-item-time">4 ชั่วโมงที่แล้ว</div>
+            </div>
+          </div>
+          <div class="sidebar-item" onclick="openArticle(2)">
+            <span class="sidebar-num">3</span>
+            <div>
+              <div class="sidebar-item-text">ธปท. ลดดอกเบี้ย ส่งผลต่อเงินฝากอย่างไร?</div>
+              <div class="sidebar-item-time">6 ชั่วโมงที่แล้ว</div>
+            </div>
+          </div>
+          <div class="sidebar-item" onclick="openArticle(3)">
+            <span class="sidebar-num">4</span>
+            <div>
+              <div class="sidebar-item-text">บัตรทอง 2569 — สิทธิที่ครอบคลุมและโรงพยาบาลรัฐที่ใช้ได้</div>
+              <div class="sidebar-item-time">8 ชั่วโมงที่แล้ว</div>
+            </div>
+          </div>
+          <div class="sidebar-item" onclick="openArticle(4)">
+            <span class="sidebar-num">5</span>
+            <div>
+              <div class="sidebar-item-text">โครงการบ้านผู้สูงอายุ รัฐสนับสนุนดอกเบี้ย 0%</div>
+              <div class="sidebar-item-time">10 ชั่วโมงที่แล้ว</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- GOV SERVICES QUICK -->
+      <div class="service-box reveal">
+        <div class="service-box-title">🔗 บริการรัฐด่วน</div>
+        <div class="service-box-sub">ลิงก์ตรงสู่หน่วยงานรัฐที่ใช้บ่อย</div>
+        <div class="service-links">
+          <a class="service-link" href="https://www.nhso.go.th/th/population-th" target="_blank" rel="noopener"><span class="service-link-icon">🏥</span>สปสช. — ตรวจสอบสิทธิ์บัตรทอง</a>
+          <a class="service-link" href="https://ddc.moph.go.th" target="_blank" rel="noopener"><span class="service-link-icon">💊</span>กรมควบคุมโรค — ข่าวสาร</a>
+          <a class="service-link" href="https://www.cgd.go.th/cs/internet/internet/%E0%B8%AB%E0%B8%99%E0%B9%89%E0%B8%B2%E0%B8%AB%E0%B8%A5%E0%B8%B1%E0%B8%812.html?page_locale=th_TH" target="_blank" rel="noopener"><span class="service-link-icon">💰</span>กรมบัญชีกลาง — เบี้ยยังชีพ</a>
+          <a class="service-link" href="https://dsdw.go.th/Home" target="_blank" rel="noopener"><span class="service-link-icon">🏠</span>กรมพัฒนาสังคมฯ</a>
+          <a class="service-link" href="tel:1479"><span class="service-link-icon">📞</span>สายด่วนกรมผู้สูงอายุ 1479</a>
+        </div>
+      </div>
+    </aside>
+  </div>
+
+
+
+</div><!-- end container -->
+
+<!-- FOOTER -->
+<footer class="footer" style="padding:28px 0 0;">
+  <div style="max-width:1200px;margin:0 auto;padding:0 24px 24px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:20px;">
+    <div class="footer-brand" style="margin:0;">
+      <div class="footer-logo" style="margin-bottom:8px;">
+        <div class="footer-logo-mark">S</div>
+        <span class="footer-logo-name">sumdays</span>
+      </div>
+      <div class="footer-desc" style="margin:0;font-size:13px;">ข่าวสารที่เข้าใจง่าย ตรงประเด็น เพื่อผู้สูงวัยและทุกคนในครอบครัวค่ะ</div>
+    </div>
+    <a href="#" onclick="showAdContact();return false;" style="color:rgba(255,255,255,0.75);font-size:15px;font-weight:600;text-decoration:none;padding:10px 20px;border:1px solid rgba(255,255,255,0.2);border-radius:10px;">📧 ติดต่อโฆษณา</a>
+  </div>
+  <div style="border-top:1px solid rgba(255,255,255,0.08);padding:12px 24px;max-width:1200px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;">
+    <span class="footer-copyright">© 2569 sumdays · สงวนลิขสิทธิ์</span>
+    <button class="footer-admin-btn" onclick="showAdminLogin()" title="จัดการระบบ (แอดมิน)">⚙️</button>
+  </div>
+</footer>
+
+<!-- TOAST CONTAINER -->
+<div class="toast-container" id="toastContainer"></div>
+
+<!-- ARTICLE MODAL -->
+<div class="overlay" id="articleOverlay" onclick="closeArticle(event)">
+  <div class="article-modal" id="articleModal">
+    <button class="article-close" onclick="closeArticleDirect()">✕</button>
+    <div id="articleContent"></div>
+    <div class="font-controls-bar">
+      <span class="font-bar-label">ขนาดตัวอักษร:</span>
+      <div class="font-bar-btns">
+        <button class="font-bar-btn" onclick="setFont(0.9,null)" style="font-size:13px;">เล็ก ก</button>
+        <button class="font-bar-btn active" onclick="setFont(1,null)" style="font-size:15px;">ปกติ ก</button>
+        <button class="font-bar-btn" onclick="setFont(1.2,null)" style="font-size:17px;">ใหญ่ ก</button>
+      </div>
+      <div class="article-share-btns" id="articleShareBtns">
+        <button onclick="shareArticleLine()" style="background:#06C755;color:#fff;border:none;border-radius:10px;padding:8px 16px;font-size:15px;font-weight:700;cursor:pointer;display:flex;align-items:center;gap:6px;font-family:inherit;">💬 แชร์ LINE</button>
+        <button onclick="shareArticleFB()" style="background:#1877F2;color:#fff;border:none;border-radius:10px;padding:8px 16px;font-size:15px;font-weight:700;cursor:pointer;display:flex;align-items:center;gap:6px;font-family:inherit;">📘 แชร์ Facebook</button>
+        <button onclick="shareArticleCopy()" style="background:var(--paper);color:var(--text);border:1.5px solid var(--border);border-radius:10px;padding:8px 16px;font-size:15px;font-weight:700;cursor:pointer;display:flex;align-items:center;gap:6px;font-family:inherit;">🔗 คัดลอกลิงก์</button>
+      </div>
+    </div>
+    <div class="donate-bar" id="donateBar">
+      <div class="donate-title">☕ สนับสนุนค่ากาแฟ</div>
+
+      <button onclick="toggleDonateDetails(this)" class="donate-toggle-btn">☕ สนับสนุนค่ากาแฟ</button>
+      <div class="donate-bank" id="donateBankDetails" style="display:none;margin-top:16px;">
+        <div class="donate-bank-row">
+          <span class="donate-bank-label">🏦 ธนาคาร</span>
+          <span class="donate-bank-val">กรุงเทพ</span>
+        </div>
+        <div class="donate-bank-row">
+          <span class="donate-bank-label">📋 เลขบัญชี</span>
+          <span class="donate-bank-val" id="donateAccNum">0987903895</span>
+          <button onclick="copyDonate('0987903895')" class="donate-copy-btn">📋 คัดลอก</button>
+        </div>
+        <div class="donate-bank-row">
+          <span class="donate-bank-label">👤 ชื่อบัญชี</span>
+          <span class="donate-bank-val" id="donateAccName">ปานดา มูลทา</span>
+          <button onclick="copyDonate('ปานดา มูลทา')" class="donate-copy-btn">📋 คัดลอก</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ADMIN LOGIN OVERLAY -->
+<div class="admin-overlay" id="loginOverlay" onclick="closeLoginOverlay(event)">
+  <div class="login-modal">
+    <div class="login-icon">🔐</div>
+    <div class="login-title">เข้าสู่ระบบแอดมิน</div>
+    <div class="login-sub">สำหรับผู้ดูแลระบบ sumdays เท่านั้นค่ะ</div>
+    <div class="form-group">
+      <input type="text" class="form-input" id="adminUser" placeholder="ชื่อผู้ใช้">
+    </div>
+    <div class="form-group">
+      <input type="password" class="form-input" id="adminPass" placeholder="รหัสผ่าน" onkeydown="if(event.key==='Enter')doLogin()">
+    </div>
+    <button class="btn btn-primary btn-block" onclick="doLogin()">เข้าสู่ระบบ</button>
+    <div style="margin-top:12px;">
+      <button class="btn btn-secondary btn-sm" onclick="closeLoginOverlay({target:document.getElementById('loginOverlay')})">ยกเลิก</button>
+    </div>
+
+  </div>
+</div>
+
+<!-- ADMIN PANEL OVERLAY -->
+<div class="admin-overlay" id="adminOverlay" onclick="closeAdminOverlay(event)">
+  <div class="admin-panel" id="adminPanel">
+    <div class="admin-head">
+      <div>
+        <div class="admin-title">⚙️ ระบบจัดการ sumdays</div>
+        <div class="admin-sub" id="adminSubTitle">แอดมิน · กำลังโหลด...</div>
+      </div>
+      <div style="display:flex;gap:8px;">
+        <button class="btn btn-secondary btn-sm" onclick="logoutAdmin()">ออกจากระบบ</button>
+        <button class="admin-close" onclick="document.getElementById('adminOverlay').classList.remove('show')">✕</button>
+      </div>
+    </div>
+    <div class="admin-tabs">
+      <button class="admin-tab active" onclick="switchTab('news',this)">📰 ข่าวทั้งหมด</button>
+      <button class="admin-tab" onclick="switchTab('add',this)">➕ เพิ่มข่าว</button>
+      <button class="admin-tab" onclick="switchTab('settings',this)">🔧 ตั้งค่า</button>
+    </div>
+    <div class="admin-body" id="adminBody"></div>
+  </div>
+</div>
+
+<script>
+// ============ DATA ============
+const NEWS = [
+  {
+    id:0, cat:'gov', catLabel:'รัฐบาล',
+    title:'รัฐบาลเดินหน้า "โครงการเบี้ยผู้สูงอายุถ้วนหน้า" คาดเริ่มจ่ายในปีงบประมาณ 2569',
+    excerpt:'คณะรัฐมนตรีอนุมัติหลักการปรับระบบสวัสดิการผู้สูงอายุ มุ่งขยายความครอบคลุมให้ทุกคนได้รับสิทธิ ไม่ว่าจะมีรายได้เท่าใด',
+    body:`<p>คณะรัฐมนตรีมีมติเห็นชอบหลักการ "โครงการเบี้ยผู้สูงอายุถ้วนหน้า" ซึ่งเป็นการปรับระบบจากเดิมที่เป็นแบบเฉพาะกลุ่มผู้มีรายได้น้อย มาเป็นสวัสดิการที่ครอบคลุมผู้สูงอายุทุกคนที่มีอายุ 60 ปีขึ้นไปและมีสัญชาติไทย</p><p>โดยอัตราเบี้ยยังชีพใหม่จะปรับเป็น 600 บาทต่อเดือนสำหรับผู้มีอายุ 60–69 ปี, 700 บาทต่อเดือนสำหรับอายุ 70–79 ปี, 800 บาทต่อเดือนสำหรับอายุ 80–89 ปี และ 1,000 บาทต่อเดือนสำหรับอายุ 90 ปีขึ้นไป</p><p>นายกรัฐมนตรีระบุว่า นโยบายนี้สอดคล้องกับแผนพัฒนาผู้สูงอายุแห่งชาติ ฉบับที่ 3 และจะเป็นหลักประกันรายได้ขั้นพื้นฐานสำหรับผู้สูงวัยทุกคน</p><p>สำหรับขั้นตอนการลงทะเบียน ผู้ที่ยังไม่เคยลงทะเบียนรับเบี้ยผู้สูงอายุสามารถติดต่อสำนักงานเขต/อบต./เทศบาลในพื้นที่ หรือลงทะเบียนออนไลน์ผ่านแอปพลิเคชัน "ทางรัฐ" ได้ตั้งแต่เดือนมิถุนายน 2569 เป็นต้นไป</p>`,
+    author:'กองบรรณาธิการ sumdays', date:'2 พ.ค. 2569', readTime:'5 นาที', views:12480
+  },
+  {
+    id:1, cat:'health', catLabel:'สุขภาพ',
+    title:'5 วิธีดูแลสุขภาพสำหรับผู้สูงอายุในช่วงหน้าร้อน ที่กรมอนามัยแนะนำ',
+    excerpt:'กรมอนามัยออกคำแนะนำสำหรับผู้สูงอายุรับมือฤดูร้อน เน้นการดื่มน้ำ หลีกเลี่ยงแดดจัด และสังเกตอาการฮีทสโตรก',
+    body:`<p>กรมอนามัย กระทรวงสาธารณสุข ได้ออกคำแนะนำสำหรับผู้สูงอายุในช่วงฤดูร้อน เนื่องจากอากาศร้อนจัดส่งผลกระทบต่อสุขภาพผู้สูงวัยมากกว่ากลุ่มวัยอื่น</p><p><strong>1. ดื่มน้ำอย่างน้อย 8 แก้วต่อวัน</strong> แม้จะไม่รู้สึกกระหายน้ำ เนื่องจากผู้สูงอายุมักรับรู้ความกระหายได้น้อยกว่าคนหนุ่มสาว</p><p><strong>2. หลีกเลี่ยงออกนอกบ้านช่วง 10.00–15.00 น.</strong> ซึ่งเป็นช่วงที่แสงแดดและความร้อนสูงสุด หากจำเป็นต้องออกไป ควรสวมหมวก ร่ม และสวมเสื้อผ้าสีอ่อน</p><p><strong>3. รับประทานอาหารที่มีน้ำสูง</strong> เช่น ผลไม้ตระกูลแตง แตงโม สับปะรด เพื่อเสริมการดูดซึมน้ำของร่างกาย</p><p><strong>4. สังเกตอาการฮีทสโตรก</strong> ได้แก่ วิงเวียน คลื่นไส้ ผิวหนังร้อน แดง ไม่มีเหงื่อ หรือสับสน หากพบให้รีบพาไปที่ร่มและโทร 1669</p><p><strong>5. ใช้พัดลมหรือเครื่องปรับอากาศ</strong> ในช่วงกลางวัน โดยเฉพาะผู้ที่มีโรคประจำตัว เช่น โรคหัวใจ ความดันโลหิตสูง</p>`,
+    author:'ฝ่ายสุขภาพ', date:'1 พ.ค. 2569', readTime:'4 นาที', views:8320
+  },
+  {
+    id:2, cat:'economy', catLabel:'เศรษฐกิจ',
+    title:'ธปท. ปรับลดดอกเบี้ยนโยบาย ส่งสัญญาณช่วยบรรเทาภาระลูกหนี้รายย่อย',
+    excerpt:'ธนาคารแห่งประเทศไทยมีมติปรับลดอัตราดอกเบี้ยนโยบาย 0.25% เพื่อกระตุ้นเศรษฐกิจและบรรเทาภาระลูกหนี้',
+    body:`<p>คณะกรรมการนโยบายการเงิน (กนง.) มีมติปรับลดอัตราดอกเบี้ยนโยบายลง 0.25% ต่อปี จาก 2.50% เป็น 2.25% มีผลทันที ท่ามกลางสัญญาณเศรษฐกิจที่ยังฟื้นตัวช้า</p><p>การปรับลดดอกเบี้ยครั้งนี้ส่งผลให้ธนาคารพาณิชย์หลายแห่งประกาศปรับลดดอกเบี้ยเงินกู้ตาม ซึ่งจะช่วยบรรเทาภาระผ่อนสินเชื่อบ้านและสินเชื่อส่วนบุคคลสำหรับลูกหนี้รายย่อย</p><p>อย่างไรก็ตาม ดอกเบี้ยเงินฝากก็อาจปรับลดลงด้วยเช่นกัน ผู้สูงอายุที่มีเงินออมในธนาคารอาจต้องพิจารณาทางเลือกการออมที่หลากหลายมากขึ้น เช่น พันธบัตรรัฐบาลหรือกองทุนตราสารหนี้</p>`,
+    author:'ฝ่ายเศรษฐกิจ', date:'1 พ.ค. 2569', readTime:'3 นาที', views:6150
+  },
+  {
+    id:3, cat:'welfare', catLabel:'สวัสดิการ',
+    title:'บัตรทอง 2569 — สิทธิประโยชน์ครอบคลุม และวิธีใช้บริการโรงพยาบาลรัฐ',
+    excerpt:'สปสช. อัปเดตสิทธิ์บัตรทองปี 2569 ขยายการรักษาฟรีที่โรงพยาบาลรัฐทุกแห่ง ไม่ต้องมีใบส่งตัว',
+    body:`<p>สำนักงานหลักประกันสุขภาพแห่งชาติ (สปสช.) ยืนยันว่าผู้ถือสิทธิ์บัตรทองสามารถเข้ารับบริการในโรงพยาบาลรัฐที่ลงทะเบียนไว้ได้โดยไม่เสียค่าใช้จ่าย และในกรณีฉุกเฉินสามารถเข้ารับการรักษาที่โรงพยาบาลรัฐใดก็ได้ทั่วประเทศ</p><p>สิทธิ์ที่ครอบคลุมได้แก่ การตรวจรักษาทั่วไป ยา การผ่าตัด การทำฟัน การตรวจคัดกรองโรค และการรักษาโรคเรื้อรัง เช่น เบาหวาน ความดัน มะเร็ง</p><p>การตรวจสอบสิทธิ์: โทร 1330 หรือแอปพลิเคชัน "สปสช." หรือเว็บไซต์ nhso.go.th</p>`,
+    author:'ฝ่ายสวัสดิการ', date:'30 เม.ย. 2569', readTime:'4 นาที', views:5890
+  },
+  {
+    id:4, cat:'social', catLabel:'สังคม',
+    title:'โครงการบ้านผู้สูงอายุ รัฐสนับสนุนสินเชื่อดอกเบี้ย 0% สำหรับผู้มีรายได้น้อย',
+    excerpt:'กรมพัฒนาสังคมและสวัสดิการประกาศขยายโครงการ เปิดรับสมัครผู้สูงอายุรายได้น้อยขอรับสนับสนุนปรับปรุงบ้าน',
+    body:`<p>กรมพัฒนาสังคมและสวัสดิการ (พส.) เปิดตัวโครงการสนับสนุนการปรับปรุงที่อยู่อาศัยสำหรับผู้สูงอายุรายได้น้อย วงเงินสูงสุด 40,000 บาทต่อราย โดยไม่มีดอกเบี้ยสำหรับผู้มีรายได้ต่ำกว่า 30,000 บาทต่อปี</p><p>การปรับปรุงที่ครอบคลุม ได้แก่ การติดราวจับในห้องน้ำ ลาดทางสำหรับรถเข็น การปรับพื้นผิวป้องกันการลื่น และการต่อเติมห้องน้ำชั้นล่าง</p><p>สามารถยื่นเรื่องได้ที่ศูนย์พัฒนาสังคมทุกจังหวัด หรือโทรสายด่วน 1300</p>`,
+    author:'ฝ่ายสังคม', date:'29 เม.ย. 2569', readTime:'3 นาที', views:4210
+  },
+  {
+    id:5, cat:'gov', catLabel:'รัฐบาล',
+    title:'เงินสนับสนุนค่าครองชีพ 1,000 บาท/เดือน — คุณสมบัติและขั้นตอนการรับสิทธิ์',
+    excerpt:'กรมบัญชีกลางชี้แจงเงื่อนไขการรับเงินสนับสนุนค่าครองชีพ ผู้สูงอายุต้องลงทะเบียนก่อนสิ้นเดือนพฤษภาคม',
+    body:`<p>กรมบัญชีกลางประกาศรายละเอียดโครงการ "เงินสนับสนุนค่าครองชีพผู้สูงอายุ" วงเงิน 1,000 บาทต่อเดือน สำหรับผู้ที่มีคุณสมบัติดังนี้</p><p>1. มีอายุ 60 ปีขึ้นไป<br>2. มีสัญชาติไทย<br>3. มีรายได้ไม่เกิน 100,000 บาทต่อปี<br>4. ไม่ได้รับสวัสดิการข้าราชการบำนาญ</p><p>วิธีลงทะเบียน: ยื่นเอกสารที่สำนักงานเขต/อบต./เทศบาลที่มีชื่อในทะเบียนบ้าน พร้อมบัตรประชาชน ทะเบียนบ้าน และสมุดบัญชีธนาคาร ภายในวันที่ 31 พฤษภาคม 2569</p>`,
+    author:'ฝ่ายนโยบาย', date:'28 เม.ย. 2569', readTime:'3 นาที', views:9400
+  },
+  {
+    id:6, cat:'tech', catLabel:'เทคโนโลยี',
+    title:'แอปฯ "ทางรัฐ" อัปเดตใหม่ — ใช้งานง่ายขึ้น มีฟีเจอร์พิเศษสำหรับผู้สูงอายุ',
+    excerpt:'กระทรวงดิจิทัลฯ ปรับปรุงแอปฯ ทางรัฐ เพิ่มโหมดตัวอักษรใหญ่และเสียงอ่านข้อความ รองรับผู้สูงวัย',
+    body:`<p>กระทรวงดิจิทัลเพื่อเศรษฐกิจและสังคม (ดีอีเอส) เปิดตัวแอปพลิเคชัน "ทางรัฐ" เวอร์ชัน 4.0 ที่ออกแบบให้ผู้สูงอายุใช้งานได้สะดวกยิ่งขึ้น</p><p>ฟีเจอร์ใหม่ที่น่าสนใจ ได้แก่ โหมดตัวอักษรขนาดใหญ่พิเศษ, ฟังก์ชันอ่านออกเสียงข้อความ, ปุ่มขนาดใหญ่และระยะห่างเพียงพอ และการล็อกอินด้วยใบหน้าหรือลายนิ้วมือ</p><p>สามารถดาวน์โหลดได้จาก App Store และ Google Play โดยค้นหาคำว่า "ทางรัฐ"</p>`,
+    author:'ฝ่ายเทคโนโลยี', date:'27 เม.ย. 2569', readTime:'2 นาที', views:3120
+  },
+  {
+    id:7, cat:'local', catLabel:'ท้องถิ่น',
+    title:'กทม. เปิด "คลินิกผู้สูงอายุ" ครบทุก 50 เขต ให้บริการโดยไม่ต้องนัดล่วงหน้า',
+    excerpt:'กรุงเทพมหานครขยายบริการคลินิกผู้สูงอายุให้ครอบคลุมทุกเขต พร้อมบริการตรวจสุขภาพประจำปีฟรี',
+    body:`<p>กรุงเทพมหานครประกาศเปิด "คลินิกผู้สูงอายุ" ครบทั้ง 50 เขต โดยให้บริการตรวจสุขภาพเบื้องต้น ประเมินความเสี่ยงโรค และให้คำปรึกษาโดยทีมแพทย์และพยาบาลผู้เชี่ยวชาญ</p><p>บริการที่ให้ฟรีสำหรับผู้มีอายุ 60 ปีขึ้นไปและมีทะเบียนบ้านในกทม. ได้แก่ การตรวจเลือดประจำปี ตรวจความดัน น้ำตาล ไขมัน และการประเมินความเสี่ยงภาวะสมองเสื่อม</p><p>สอบถามเขตใกล้บ้านหรือโทร 1555 (สายด่วน กทม.)</p>`,
+    author:'ฝ่ายท้องถิ่น', date:'26 เม.ย. 2569', readTime:'3 นาที', views:7230
+  },
+  {
+    id:10, cat:'fitness', catLabel:'ออกกำลังกาย',
+    title:'ท่าบริหารร่างกาย 10 นาทีต่อวัน สำหรับผู้สูงอายุ ทำได้ที่บ้านโดยไม่ต้องใช้อุปกรณ์',
+    excerpt:'กรมการแพทย์แนะนำท่าออกกำลังกายเบาๆ ที่เหมาะกับผู้สูงวัย ช่วยเพิ่มความยืดหยุ่น สมดุลร่างกาย และลดความเสี่ยงหกล้ม',
+    body:`<p>การออกกำลังกายสม่ำเสมอเป็นกุญแจสำคัญของสุขภาพที่ดีในวัยสูงอายุ</p><p><strong>1. ท่ายืนเขย่งเท้า</strong> — ยืนตรงจับพนักเก้าอี้ เขย่งปลายเท้าขึ้นลงช้าๆ 15 ครั้ง ช่วยเสริมกล้ามเนื้อน่อง</p><p><strong>2. ท่าเดินอยู่กับที่</strong> — ยืนยกเข่าสลับซ้ายขวาช้าๆ นาน 1 นาที ช่วยการทรงตัว</p><p><strong>3. ท่าหมุนข้อไหล่</strong> — หมุนไหล่ไปข้างหน้าและข้างหลัง 10 รอบ ลดอาการปวดเมื่อย</p><p><strong>4. ท่านั่งยืน</strong> — นั่งแล้วลุกขึ้นยืนช้าๆ 10 ครั้ง เสริมกล้ามเนื้อขา</p><p><strong>5. ท่าหายใจลึก</strong> — หายใจเข้าลึกๆ นับ 4 กลั้นนับ 2 หายใจออกนับ 6 ทำ 5 รอบ ลดความเครียด</p>`,
+    author:'ฝ่ายสุขภาพ', date:'2 พ.ค. 2569', readTime:'3 นาที', views:0
+  },
+  {
+    id:11, cat:'recipe', catLabel:'สูตรอาหาร',
+    title:'ต้มจืดเต้าหู้ผักรวม สูตรเพื่อสุขภาพผู้สูงวัย โซเดียมต่ำ ย่อยง่าย',
+    excerpt:'เมนูต้มจืดเบาๆ รสชาติกลมกล่อม เต็มไปด้วยโปรตีนและแร่ธาตุ เหมาะกับผู้ที่ควบคุมความดันและเบาหวาน',
+    body:`<p>ต้มจืดเต้าหู้ผักรวมเป็นเมนูที่เหมาะมากสำหรับผู้สูงอายุ เพราะให้โปรตีนสูง ย่อยง่าย</p><p><strong>ส่วนผสม (2 คน):</strong> เต้าหู้ขาวนุ่ม 1 แผ่น แครอท 1 หัว ข้าวโพดอ่อน 5 ฝัก เห็ดหอม 4 ดอก ผักกาดขาว 3 ใบ น้ำซุป 4 ถ้วย ซีอิ๊วขาวโซเดียมต่ำ 1 ช้อนโต๊ะ</p><p><strong>วิธีทำ:</strong> ต้มน้ำซุปให้เดือด ใส่แครอทและเห็ดก่อน 5 นาที ใส่ข้าวโพดและผักกาด 3 นาที ใส่เต้าหู้ ปรุงรส โรยต้นหอม พร้อมเสิร์ฟค่ะ</p>`,
+    author:'ฝ่ายโภชนาการ', date:'1 พ.ค. 2569', readTime:'4 นาที', views:0
+  },
+  {
+    id:12, cat:'selfdev', catLabel:'พัฒนาตัวเอง',
+    title:'เริ่มต้นเรียนรู้สิ่งใหม่ในวัย 60+ ไม่มีคำว่าสายเกินไป',
+    excerpt:'งานวิจัยพบว่าการเรียนรู้สิ่งใหม่ในวัยสูงอายุช่วยชะลอความเสื่อมของสมอง และเพิ่มความสุขในชีวิตได้อย่างมีนัยสำคัญ',
+    body:`<p>ความเชื่อที่ว่าแก่แล้วเรียนรู้ไม่ได้เป็นความเข้าใจผิดค่ะ สมองมนุษย์มีความยืดหยุ่นและพัฒนาได้ตลอดชีวิต</p><p>🎨 <strong>วาดภาพหรืองานฝีมือ</strong> — ช่วยฝึกสมาธิ</p><p>📱 <strong>เรียนใช้สมาร์ทโฟน</strong> — ติดตามข่าว วิดีโอคอล แชร์รูปครอบครัว</p><p>🌱 <strong>ปลูกต้นไม้</strong> — ฝึกความอดทน</p><p>📚 <strong>อ่านหนังสือ</strong> — กระตุ้นจินตนาการ</p><p>🎵 <strong>เรียนดนตรี</strong> — ช่วยฝึกสมองได้มาก</p><p>เริ่มจากสิ่งที่ชอบทีละเล็กทีละน้อยนะคะ</p>`,
+    author:'กองบรรณาธิการ sumdays', date:'30 เม.ย. 2569', readTime:'4 นาที', views:0
+  },
+  {
+    id:13, cat:'mental', catLabel:'สุขภาพจิต',
+    title:'รับมือความเหงาอย่างไร? เคล็ดลับสร้างความสุขในชีวิตประจำวันสำหรับผู้สูงวัย',
+    excerpt:'ผู้สูงอายุจำนวนมากเผชิญกับความเหงาโดยไม่รู้ตัว นักจิตวิทยาแนะวิธีสร้างความสัมพันธ์และค้นหาความหมายในชีวิตใหม่',
+    body:`<p>ความเหงาเป็นหนึ่งในความท้าทายที่พบบ่อยในวัยสูงอายุ แต่มีวิธีรับมือได้ค่ะ</p><p><strong>1. สร้างกิจวัตรที่มีความหมาย</strong> — ตื่นนอนเวลาเดิม ทานอาหารตรงเวลา ออกกำลังกายสม่ำเสมอ</p><p><strong>2. เชื่อมต่อกับผู้อื่น</strong> — เข้าร่วมชมรมหรือกิจกรรมในชุมชน</p><p><strong>3. อาสาสมัครทำประโยชน์</strong> — สร้างความรู้สึกมีคุณค่า</p><p><strong>4. พูดคุยกับครอบครัว</strong> — บอกความรู้สึกตรงๆ</p><p><strong>5. ขอความช่วยเหลือ</strong> — หากรู้สึกเศร้าต่อเนื่องนานกว่า 2 สัปดาห์ ควรปรึกษาแพทย์ค่ะ</p>`,
+    author:'ฝ่ายสุขภาพจิต', date:'29 เม.ย. 2569', readTime:'5 นาที', views:0
+  },
+  {
+    id:14, cat:'selfcare', catLabel:'ดูแลตัวเอง',
+    title:'ดูแลผิวพรรณในวัยสูงอายุ ทำได้ง่ายๆ ด้วยของใกล้มือและไม่ต้องแพง',
+    excerpt:'ผิวหนังในวัยสูงอายุต้องการการดูแลเป็นพิเศษ ผู้เชี่ยวชาญแนะวิธีง่ายๆ ที่ทำได้เองที่บ้าน',
+    body:`<p>ผิวหนังของผู้สูงอายุบางลงและสูญเสียความชุ่มชื้นเร็วกว่า การดูแลที่ถูกต้องช่วยลดปัญหาได้มากค่ะ</p><p>🧴 <strong>ทามอยส์เจอร์ไรเซอร์</strong> — ทาหลังอาบน้ำทันทีขณะผิวยังชื้น</p><p>☀️ <strong>ทากันแดด SPF 30 ขึ้นไป</strong> — แม้อยู่ในร่ม</p><p>💧 <strong>ดื่มน้ำ 6-8 แก้วต่อวัน</strong> — ผิวชุ่มชื้นจากภายใน</p><p>🚿 <strong>อาบน้ำอุ่น ไม่ร้อนจัด</strong> — น้ำร้อนทำลายน้ำมันธรรมชาติในผิว</p><p>หากมีอาการผิดปกติควรปรึกษาแพทย์ผิวหนังนะคะ</p>`,
+    author:'ฝ่ายสุขภาพ', date:'28 เม.ย. 2569', readTime:'3 นาที', views:0
+  }
+];
+
+let isAdmin = false;
+let currentTab = 'news';
+let currentFontScale = 1;
+let isDark = false;
+let currentFilter = 'all';
+let currentArticleId = null;
+let localNews = JSON.parse(localStorage.getItem('sumdaysNews') || 'null') || [...NEWS];
+
+function fmt(n) { return n ? n.toLocaleString('th-TH') : ''; }
+function $(id) { return document.getElementById(id); }
+
+// ============ DATE ============
+function setDateDisplay() {
+  const now = new Date();
+  const opts = { weekday:'long', year:'numeric', month:'long', day:'numeric' };
+  $('topDate').textContent = now.toLocaleDateString('th-TH', opts);
+}
+
+// ============ FONT SIZE ============
+function setFont(scale, btn) {
+  currentFontScale = scale;
+  document.documentElement.style.setProperty('--font-scale', scale);
+  document.querySelectorAll('.font-btn').forEach(b => b.classList.remove('active'));
+  document.querySelectorAll('.font-bar-btn').forEach(b => b.classList.remove('active'));
+  document.querySelectorAll('.access-btn').forEach(b => b.classList.remove('active'));
+  if (btn) btn.classList.add('active');
+  localStorage.setItem('sumdaysFontScale', scale);
+}
+
+// ============ DARK MODE ============
+function toggleDark(btn) {
+  isDark = !isDark;
+  document.documentElement.setAttribute('data-theme', isDark ? 'dark' : '');
+  $('darkBtn').textContent = isDark ? '☀️' : '🌙';
+  const toggle = $('darkToggle');
+  if (toggle) { toggle.classList.toggle('on', isDark); }
+  localStorage.setItem('sumdaysDark', isDark ? '1' : '');
+}
+
+// ============ HIGH CONTRAST ============
+function toggleHighContrast() {
+  const toggle = $('highContrastToggle');
+  const on = toggle.classList.toggle('on');
+  document.body.style.lineHeight = on ? '2.1' : '1.8';
+}
+
+// ============ FILTER ============
+function filterCat(cat, el) {
+  currentFilter = cat;
+  document.querySelectorAll('.nav-cat').forEach(e => e.classList.remove('active'));
+  document.querySelectorAll('.cat-chip').forEach(e => e.classList.remove('active'));
+  // sync active state across nav-cats and cat-chips
+  document.querySelectorAll('.nav-cat').forEach(e => {
+    const onclick = e.getAttribute('onclick') || '';
+    if (onclick.includes("'"+cat+"'") || (cat==='all' && onclick.includes("'all'"))) e.classList.add('active');
+  });
+  if (el) el.classList.add('active');
+  renderNews(cat);
+}
+
+// ============ RENDER NEWS ============
+function renderNews(filter='all') {
+  const list = $('newsList');
+  if (!list) return;
+  const items = filter === 'all' ? localNews : localNews.filter(n => n.cat === filter);
+  list.innerHTML = items.map((n, i) => `
+    <div class="news-card${i===0?' important':''} reveal" onclick="openArticle(${n.id})" style="animation-delay:${i*0.06}s">
+      <div class="news-card-img" style="background:${catColor(n.cat)}">
+        ${n.image ? `<img src="${n.image}" alt="" style="width:100%;height:100%;object-fit:cover;" onerror="this.style.display='none'">` : `<div style="display:flex;align-items:center;justify-content:center;height:100%;font-size:${i===0?'60px':'40px'};opacity:0.25;">${catEmoji(n.cat)}</div>`}
+      </div>
+      <div class="news-card-body">
+        <div class="news-card-cat">${n.catLabel}</div>
+        <div class="news-card-title">${n.title}</div>
+        <div class="news-card-excerpt">${n.excerpt}</div>
+        <div class="news-card-footer">
+          <span class="news-card-time">🕐 ${n.date} · ${n.readTime}</span>
+          <button class="news-card-share" onclick="event.stopPropagation();shareNews(${n.id})">แชร์</button>
+        </div>
+      </div>
+    </div>
+  `).join('');
+  setTimeout(() => { document.querySelectorAll('.reveal').forEach(el => el.classList.add('visible')); }, 50);
+}
+
+function catColor(cat) {
+  const map = { gov:'linear-gradient(135deg,#1A4A8A,#0C2A5A)', health:'linear-gradient(135deg,#1A6640,#0A3820)', economy:'linear-gradient(135deg,#B8820A,#6A4500)', social:'linear-gradient(135deg,#8A1A4A,#5A0A2A)', welfare:'linear-gradient(135deg,#C8390A,#8A2007)', local:'linear-gradient(135deg,#3D3530,#2C2620)', tech:'linear-gradient(135deg,#1A3A8A,#0A1A5A)', fitness:'linear-gradient(135deg,#2E7D32,#1B5E20)', recipe:'linear-gradient(135deg,#E65100,#BF360C)', selfdev:'linear-gradient(135deg,#1565C0,#0D47A1)', mental:'linear-gradient(135deg,#6A1B9A,#4A148C)', selfcare:'linear-gradient(135deg,#AD1457,#880E4F)' };
+  return map[cat] || 'linear-gradient(135deg,#3D3530,#1A1612)';
+}
+function catEmoji(cat) {
+  const map = { gov:'🏛️', health:'💊', economy:'💰', social:'🤝', welfare:'🎖️', local:'📍', tech:'📱', fitness:'🧘', recipe:'🍲', selfdev:'🌱', mental:'🧠', selfcare:'💆' };
+  return map[cat] || '📰';
+}
+
+// ============ ARTICLE MODAL ============
+function openArticle(id) {
+  const n = localNews.find(x => x.id == id);
+  if (!n) return;
+  currentArticleId = id;
+  $('articleContent').innerHTML = `
+    <div class="article-back-bar">
+      <button class="article-back-btn" onclick="closeArticleDirect()">← กลับ</button>
+      <span class="article-back-title">${n.title}</span>
+    </div>
+    <div class="article-hero-img" style="background:${catColor(n.cat)}">
+      ${n.image ? `<img src="${n.image}" alt="" style="width:100%;height:100%;object-fit:cover;" onerror="this.style.display='none'">` : `<div style="display:flex;align-items:center;justify-content:center;height:100%;font-size:80px;opacity:0.2;">${catEmoji(n.cat)}</div>`}
+    </div>
+    <div class="article-body">
+      <div class="article-cat">${n.catLabel}</div>
+      <div class="article-title">${n.title}</div>
+      <div class="article-meta">
+        <span>✍️ ${n.author}</span>
+        <span>·</span>
+        <span>📅 ${n.date}</span>
+        <span>·</span>
+        <span>⏱ ${n.readTime}</span>
+      </div>
+      <div class="article-text">${n.body}</div>
+    </div>
+  `;
+  // reset donate toggle
+  const det = document.getElementById('donateBankDetails');
+  const btn = document.querySelector('.donate-toggle-btn');
+  if (det) det.style.display = 'none';
+  if (btn) { btn.classList.remove('open'); btn.textContent = '☕ สนับสนุนค่ากาแฟ'; }
+  $('articleOverlay').classList.add('show');
+  $('articleOverlay').scrollTop = 0;
+  document.body.style.overflow = 'hidden';
+}
+function closeArticle(e) {
+  if (e.target === $('articleOverlay')) closeArticleDirect();
+}
+function closeArticleDirect() {
+  $('articleOverlay').classList.remove('show');
+  document.body.style.overflow = '';
+}
+
+// ============ SHARE ============
+function shareNews(id) {
+  const n = localNews.find(x => x.id == id);
+  if (!n) return;
+  if (navigator.share) { navigator.share({ title: n.title, text: n.excerpt, url: window.location.href }); }
+  else {
+    navigator.clipboard.writeText(n.title + '\n' + window.location.href).then(() => toast('คัดลอกลิงก์แล้วค่ะ!', 'success'));
+  }
+}
+
+// ============ ADMIN LOGIN ============
+function showAdminLogin() {
+  if (isAdmin) { openAdminPanel(); return; }
+  $('loginOverlay').classList.add('show');
+}
+function closeLoginOverlay(e) {
+  if (e.target === $('loginOverlay')) $('loginOverlay').classList.remove('show');
+}
+function doLogin() {
+  const u = $('adminUser').value.trim();
+  const p = $('adminPass').value;
+  if (u === 'sumdays_admin' && p === 'Sumdays_work99') {
+    isAdmin = true;
+    $('loginOverlay').classList.remove('show');
+    openAdminPanel();
+    toast('เข้าสู่ระบบสำเร็จ ยินดีต้อนรับค่ะ!', 'success');
+  } else {
+    toast('ชื่อผู้ใช้หรือรหัสผ่านไม่ถูกต้องค่ะ', 'error');
+    $('adminPass').value = '';
+  }
+}
+function logoutAdmin() {
+  isAdmin = false;
+  $('adminOverlay').classList.remove('show');
+  toast('ออกจากระบบแล้วค่ะ', 'success');
+}
+
+// ============ ADMIN PANEL ============
+function openAdminPanel() {
+  $('adminSubTitle').textContent = `แอดมิน · ${localNews.length} ข่าว`;
+  renderAdminTab(currentTab);
+  $('adminOverlay').classList.add('show');
+}
+function closeAdminOverlay(e) {
+  if (e.target === $('adminOverlay')) $('adminOverlay').classList.remove('show');
+}
+function switchTab(tab, el) {
+  currentTab = tab;
+  document.querySelectorAll('.admin-tab').forEach(b => b.classList.remove('active'));
+  if (el) el.classList.add('active');
+  renderAdminTab(tab);
+}
+function renderAdminTab(tab) {
+  const body = $('adminBody');
+  if (tab === 'news') body.innerHTML = renderNewsTable();
+  else if (tab === 'add') body.innerHTML = renderAddForm();
+  else body.innerHTML = renderSettings();
+}
+
+function renderNewsTable() {
+  return `
+    <div style="overflow-x:auto;">
+      <table class="news-table">
+        <thead>
+          <tr>
+            <th>#</th>
+            <th>หมวด</th>
+            <th style="min-width:240px;">หัวข้อข่าว</th>
+            <th>วันที่</th>
+            <th>สถานะ</th>
+            <th></th>
+          </tr>
+        </thead>
+        <tbody>
+          ${localNews.map(n => `
+            <tr>
+              <td>${n.id}</td>
+              <td><span style="font-size:12px;font-weight:700;color:var(--accent)">${n.catLabel}</span></td>
+              <td style="font-weight:500;">${n.title.length > 60 ? n.title.slice(0,60)+'…' : n.title}</td>
+              <td>${n.date}</td>
+              <td><span class="status-pill status-published">เผยแพร่</span></td>
+              <td><div style="display:flex;gap:6px;">
+                <button class="btn btn-secondary btn-sm" onclick="editNews(${n.id})">แก้ไข</button>
+                <button class="btn btn-sm" style="background:var(--accent-soft);color:var(--accent);font-size:13px;padding:6px 10px;border-radius:8px;" onclick="deleteNews(${n.id})">ลบ</button>
+              </div></td>
+            </tr>
+          `).join('')}
+        </tbody>
+      </table>
+    </div>
+  `;
+}
+
+function renderAddForm(prefill) {
+  const n = prefill || {};
+  return `
+    <div class="form-row">
+      <div class="form-group">
+        <label class="form-label">หมวดหมู่</label>
+        <select class="form-select" id="fCat">
+          <option value="gov" ${n.cat==='gov'?'selected':''}>รัฐบาลและนโยบาย</option>
+          <option value="health" ${n.cat==='health'?'selected':''}>สุขภาพ</option>
+          <option value="economy" ${n.cat==='economy'?'selected':''}>เศรษฐกิจ</option>
+          <option value="social" ${n.cat==='social'?'selected':''}>สังคม</option>
+          <option value="welfare" ${n.cat==='welfare'?'selected':''}>สวัสดิการ</option>
+          <option value="local" ${n.cat==='local'?'selected':''}>ท้องถิ่น</option>
+          <option value="tech" ${n.cat==='tech'?'selected':''}>เทคโนโลยี</option>
+          <option value="fitness" ${n.cat==='fitness'?'selected':''}>ออกกำลังกายและสุขภาพ</option>
+          <option value="recipe" ${n.cat==='recipe'?'selected':''}>สูตรอาหารและโภชนาการ</option>
+          <option value="selfdev" ${n.cat==='selfdev'?'selected':''}>พัฒนาตัวเอง</option>
+          <option value="mental" ${n.cat==='mental'?'selected':''}>สุขภาพจิต</option>
+          <option value="selfcare" ${n.cat==='selfcare'?'selected':''}>💆 การดูแลตัวเอง</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label class="form-label">ผู้เขียน / แหล่งข่าว</label>
+        <input type="text" class="form-input" id="fAuthor" placeholder="กองบรรณาธิการ sumdays" value="${n.author||''}">
+      </div>
+    </div>
+    <div class="form-group">
+      <label class="form-label">หัวข้อข่าว</label>
+      <input type="text" class="form-input" id="fTitle" placeholder="หัวข้อข่าวที่ชัดเจนและกระชับ" value="${n.title||''}">
+    </div>
+    <div class="form-group">
+      <label class="form-label">รูปภาพปก (URL รูป หรือเว้นว่างไว้)</label>
+      <input type="text" class="form-input" id="fImage" placeholder="https://example.com/image.jpg" value="${n.image||''}" oninput="previewAdminImage(this.value)">
+      <div id="adminImgPreview" style="margin-top:10px;display:${(n.image)?'block':'none'};">
+        <img src="${n.image||''}" alt="preview" style="max-width:100%;max-height:200px;border-radius:10px;object-fit:cover;border:1.5px solid var(--border);" onerror="this.parentElement.style.display='none'">
+      </div>
+    </div>
+    <div class="form-group">
+      <label class="form-label">ย่อหน้านำ (excerpt)</label>
+      <textarea class="form-textarea" id="fExcerpt" placeholder="สรุปเนื้อหาข่าวสั้นๆ 2–3 ประโยค" style="min-height:80px;">${n.excerpt||''}</textarea>
+    </div>
+    <div class="form-group">
+      <label class="form-label">เนื้อหาข่าว</label>
+      <div style="display:flex;gap:8px;margin-bottom:8px;flex-wrap:wrap;align-items:center;">
+        <input type="text" id="insertImgUrl" class="form-input" placeholder="วาง URL รูปภาพที่นี่..." style="flex:1;min-width:200px;font-size:14px;padding:8px 12px;">
+        <button type="button" onclick="insertImageToBody()" style="background:var(--blue);color:#fff;border:none;border-radius:8px;padding:8px 16px;font-size:14px;font-weight:700;cursor:pointer;font-family:inherit;white-space:nowrap;">🖼️ แทรกรูป</button>
+      </div>
+      <div id="insertImgPreview" style="display:none;margin-bottom:8px;">
+        <img id="insertImgPreviewImg" src="" alt="preview" style="max-width:100%;max-height:160px;border-radius:8px;object-fit:cover;border:1.5px solid var(--border);">
+      </div>
+      <textarea class="form-textarea" id="fBody" placeholder="พิมพ์เนื้อหาข่าวได้เลยค่ะ กด Enter เพื่อขึ้นย่อหน้าใหม่" style="min-height:200px;font-size:14px;line-height:1.8;">${bodyToText(n.body||'')}</textarea>
+      <div class="form-hint">💡 พิมพ์เนื้อหาตามปกติ กด Enter ขึ้นบรรทัดใหม่ได้เลย ไม่ต้องใส่ HTML ค่ะ</div>
+    </div>
+    <div class="btn-row">
+      <button class="btn btn-primary" onclick="saveNews(${n.id !== undefined ? n.id : -1})">
+        ${n.id !== undefined ? '💾 บันทึกการแก้ไข' : '➕ เพิ่มข่าวใหม่'}
+      </button>
+      <button class="btn btn-secondary" onclick="switchTab('news',null);document.querySelectorAll('.admin-tab')[0].classList.add('active');document.querySelectorAll('.admin-tab')[1].classList.remove('active')">ยกเลิก</button>
+    </div>
+  `;
+}
+
+function renderSettings() {
+  const currentTicker = getTicker().join('\n');
+  return `
+    <div style="display:flex;flex-direction:column;gap:20px;">
+      <div class="form-group">
+        <label class="form-label">📢 ข่าว Breaking (Ticker)</label>
+        <div class="form-hint" style="margin-bottom:8px;">แต่ละบรรทัดคือ 1 ข้อความ กด "บันทึก" แล้วข้อความจะวิ่งทันทีค่ะ</div>
+        <textarea class="form-textarea" id="tickerInput" style="min-height:160px;font-size:15px;line-height:1.8;">${currentTicker}</textarea>
+      </div>
+      <div class="btn-row">
+        <button class="btn btn-primary" onclick="saveTicker()">💾 บันทึก Ticker</button>
+        <button class="btn btn-secondary" onclick="toast('รีเซ็ตข้อมูลทดสอบแล้วค่ะ','success');localNews=[...NEWS];localStorage.removeItem('sumdaysNews');renderNews()">🔄 รีเซ็ตข้อมูลทดสอบ</button>
+      </div>
+    </div>
+  `;
+}
+
+function editNews(id) {
+  const n = localNews.find(x => x.id === id);
+  if (!n) return;
+  currentTab = 'add';
+  document.querySelectorAll('.admin-tab').forEach(b => b.classList.remove('active'));
+  document.querySelectorAll('.admin-tab')[1].classList.add('active');
+  $('adminBody').innerHTML = renderAddForm(n);
+}
+
+function deleteNews(id) {
+  if (!confirm('ลบข่าวนี้จริงหรือไม่คะ?')) return;
+  localNews = localNews.filter(n => n.id !== id);
+  localStorage.setItem('sumdaysNews', JSON.stringify(localNews));
+  renderAdminTab('news');
+  renderNews();
+  toast('ลบข่าวแล้วค่ะ', 'success');
+}
+
+function saveNews(id) {
+  const catEl = $('fCat'); if (!catEl) return;
+  const catMap = { gov:'รัฐบาล', health:'สุขภาพ', economy:'เศรษฐกิจ', social:'สังคม', welfare:'สวัสดิการ', local:'ท้องถิ่น', tech:'เทคโนโลยี', fitness:'ออกกำลังกาย', recipe:'สูตรอาหาร', selfdev:'พัฒนาตัวเอง', mental:'สุขภาพจิต', selfcare:'ดูแลตัวเอง' };
+  const cat = catEl.value;
+  const title = $('fTitle').value.trim();
+  const excerpt = $('fExcerpt').value.trim();
+  const body = textToBody($('fBody').value);
+  const author = $('fAuthor').value.trim() || 'กองบรรณาธิการ sumdays';
+  if (!title || !excerpt || !body) { toast('กรุณากรอกข้อมูลให้ครบค่ะ', 'error'); return; }
+  const now = new Date();
+  const dateStr = now.toLocaleDateString('th-TH', { day:'numeric', month:'short', year:'numeric' });
+  if (id === -1) {
+    const newId = Math.max(...localNews.map(n => n.id)) + 1;
+    localNews.unshift({ id:newId, cat, catLabel:catMap[cat], title, excerpt, body, author, date:dateStr, readTime:'3 นาที', views:0 });
+    toast('เพิ่มข่าวใหม่แล้วค่ะ!', 'success');
+  } else {
+    const idx = localNews.findIndex(n => n.id === id);
+    if (idx !== -1) { localNews[idx] = { ...localNews[idx], cat, catLabel:catMap[cat], title, excerpt, body, author, image }; }
+    toast('บันทึกการแก้ไขแล้วค่ะ', 'success');
+  }
+  localStorage.setItem('sumdaysNews', JSON.stringify(localNews));
+  currentTab = 'news';
+  document.querySelectorAll('.admin-tab').forEach(b => b.classList.remove('active'));
+  document.querySelectorAll('.admin-tab')[0].classList.add('active');
+  renderAdminTab('news');
+  renderNews();
+}
+
+// ============ SEARCH ============
+function toggleSearch() {
+  const q = prompt('ค้นหาข่าวค่ะ:');
+  if (!q || !q.trim()) return;
+  const results = localNews.filter(n => n.title.includes(q) || n.excerpt.includes(q) || n.catLabel.includes(q));
+  if (!results.length) { toast('ไม่พบข่าวที่ตรงกันค่ะ', 'error'); return; }
+  const list = $('newsList');
+  list.innerHTML = `<div style="padding:12px 0 4px;font-size:14px;color:var(--text-mute);">ผลการค้นหา "${q}" — พบ ${results.length} รายการ <button onclick="renderNews()" style="color:var(--accent);font-weight:600;margin-left:8px;">ล้างการค้นหา</button></div>` + results.map((n,i) => `
+    <div class="news-card reveal" onclick="openArticle(${n.id})">
+      <div class="news-card-img" style="background:${catColor(n.cat)}">
+        <div style="display:flex;align-items:center;justify-content:center;height:100%;font-size:40px;opacity:0.25;">${catEmoji(n.cat)}</div>
+      </div>
+      <div class="news-card-body">
+        <div class="news-card-cat">${n.catLabel}</div>
+        <div class="news-card-title">${n.title}</div>
+        <div class="news-card-excerpt">${n.excerpt}</div>
+        <div class="news-card-footer"><span class="news-card-time">📅 ${n.date}</span></div>
+      </div>
+    </div>
+  `).join('');
+  setTimeout(() => document.querySelectorAll('.reveal').forEach(el => el.classList.add('visible')), 50);
+}
+
+// ============ SHARE IN ARTICLE ============
+function shareArticleLine() {
+  const n = currentArticleId !== null ? localNews.find(x => x.id == currentArticleId) : null;
+  const text = n ? encodeURIComponent(n.title + ' — ' + window.location.href) : encodeURIComponent(window.location.href);
+  window.open('https://social-plugins.line.me/lineit/share?url=' + encodeURIComponent(window.location.href) + '&text=' + (n ? encodeURIComponent(n.title) : ''), '_blank');
+}
+function shareArticleFB() {
+  window.open('https://www.facebook.com/sharer/sharer.php?u=' + encodeURIComponent(window.location.href), '_blank');
+}
+function shareArticleCopy() {
+  const n = currentArticleId !== null ? localNews.find(x => x.id == currentArticleId) : null;
+  const text = (n ? n.title + '\n' : '') + window.location.href;
+  navigator.clipboard.writeText(text).then(() => toast('คัดลอกลิงก์แล้วค่ะ!', 'success'));
+}
+
+// ============ DONATE TOGGLE ============
+function toggleDonateDetails(btn) {
+  const details = document.getElementById('donateBankDetails');
+  if (!details) return;
+  const isOpen = details.style.display !== 'none';
+  details.style.display = isOpen ? 'none' : 'block';
+  btn.classList.toggle('open', !isOpen);
+  btn.textContent = isOpen ? '☕ สนับสนุนค่ากาแฟ' : '✕ ปิด';
+}
+
+// ============ DONATE COPY ============
+function copyDonate(text) {
+  navigator.clipboard.writeText(text).then(() => toast('คัดลอก "' + text + '" แล้วค่ะ!', 'success'));
+}
+
+// ============ DHAMMA QUOTE ============
+const DHAMMA = [
+  { quote: 'ใจที่สงบ คือสมบัติที่ยิ่งใหญ่ที่สุดในโลก', source: 'สมเด็จพระพุทธโฆษาจารย์' },
+  { quote: 'ทำวันนี้ให้ดีที่สุด อย่าให้เสียใจในวันพรุ่งนี้', source: 'หลวงพ่อชา สุภัทโท' },
+  { quote: 'ความสุขที่แท้จริงอยู่ภายในใจ ไม่ใช่ภายนอก', source: 'หลวงพ่อชา สุภัทโท' },
+  { quote: 'อย่าคิดมาก จงทำความดีในปัจจุบัน', source: 'หลวงปู่มั่น ภูริทัตโต' },
+  { quote: 'จิตที่ฝึกดีแล้ว นำสุขมาให้', source: 'พระธรรมปิฎก' },
+  { quote: 'ผู้ชนะที่แท้จริง คือผู้ชนะใจตนเอง', source: 'สมเด็จพระญาณสังวร' },
+  { quote: 'ความเมตตา คือยาวิเศษที่รักษาทุกโรคในใจ', source: 'หลวงพ่อจรัญ ฐิตธัมโม' },
+  { quote: 'วันคืนล่วงไปๆ บัดนี้เราทำอะไรอยู่', source: 'พระพุทธพจน์' },
+  { quote: 'พึ่งตนเอง พึ่งธรรม อย่าพึ่งสิ่งอื่น', source: 'พระพุทธพจน์' },
+  { quote: 'ทำดีได้ดี ทำชั่วได้ชั่ว กฎแห่งกรรมไม่เคยผิดพลาด', source: 'หลวงพ่อฤๅษีลิงดำ' },
+  { quote: 'รู้จักพอ รู้จักพัก รู้จักปล่อยวาง ชีวิตก็เป็นสุข', source: 'หลวงพ่อปัญญานันทภิกขุ' },
+  { quote: 'อย่าโกรธ อย่าโลภ อย่าหลง แค่นี้ก็สุขแล้ว', source: 'หลวงพ่อปัญญานันทภิกขุ' },
+  { quote: 'จงอยู่กับปัจจุบัน อดีตผ่านไปแล้ว อนาคตยังมาไม่ถึง', source: 'หลวงพ่อชา สุภัทโท' },
+  { quote: 'ความกตัญญู คือเครื่องหมายของคนดี', source: 'สมเด็จพระพุทธโฆษาจารย์' },
+  { quote: 'ใจเย็นไว้ ทุกอย่างมีทางออก', source: 'หลวงพ่อจรัญ ฐิตธัมโม' },
+  { quote: 'สติคือตัวยา ปัญญาคือหมอ', source: 'หลวงปู่ดูลย์ อตุโล' },
+  { quote: 'ผู้ให้ย่อมได้รับ ผู้ไม่ให้ย่อมเสื่อม', source: 'พระพุทธพจน์' },
+  { quote: 'ความอดทน คือกำลังของผู้แข็งแกร่ง', source: 'สมเด็จพระญาณสังวร' },
+  { quote: 'ปล่อยวางสิ่งที่ยึดถือ จิตใจก็จะเบาสบาย', source: 'หลวงปู่มั่น ภูริทัตโต' },
+  { quote: 'ทำวันนี้ให้มีคุณค่า นั่นคือการบูชาชีวิต', source: 'หลวงพ่อปัญญานันทภิกขุ' },
+  { quote: 'ความเพียร คือบันไดสู่ความสำเร็จทุกอย่าง', source: 'พระธรรมปิฎก' },
+  { quote: 'จงรักผู้อื่นเหมือนรักตนเอง นั่นคือธรรมะที่แท้จริง', source: 'พระพุทธพจน์' },
+  { quote: 'สุขที่แท้ไม่ได้อยู่ที่มีมาก แต่อยู่ที่พอใจในสิ่งที่มี', source: 'หลวงพ่อชา สุภัทโท' },
+  { quote: 'ทุกวันคือโอกาสใหม่ที่จะทำความดี', source: 'หลวงพ่อจรัญ ฐิตธัมโม' },
+  { quote: 'ใจดี พูดดี ทำดี ชีวิตนี้ก็สมบูรณ์แล้ว', source: 'หลวงพ่อปัญญานันทภิกขุ' },
+  { quote: 'อย่ากลัวความตาย จงกลัวการใช้ชีวิตที่ไม่มีคุณค่า', source: 'สมเด็จพระญาณสังวร' },
+  { quote: 'น้ำใจคือสิ่งที่มีค่ามากกว่าทรัพย์สินทั้งปวง', source: 'หลวงพ่อปัญญานันทภิกขุ' },
+  { quote: 'ผู้มีสติย่อมมีความสุข ผู้ขาดสติย่อมมีแต่ทุกข์', source: 'พระธรรมปิฎก' },
+  { quote: 'ความสะอาด ความสงบ และความรู้ คือทางแห่งความสุข', source: 'พระพุทธพจน์' },
+  { quote: 'อย่ารอให้พรุ่งนี้ ทำความดีได้เลยตั้งแต่วันนี้', source: 'หลวงปู่ดูลย์ อตุโล' },
+];
+
+function setGreeting() {
+  const today = new Date();
+  // Use day of year so quote changes every day
+  const start = new Date(today.getFullYear(), 0, 0);
+  const diff = today - start;
+  const dayOfYear = Math.floor(diff / (1000 * 60 * 60 * 24));
+  const d = DHAMMA[dayOfYear % DHAMMA.length];
+
+  const gi = $('greetingIcon'), gt = $('greetingText'), gs = $('greetingSource');
+  if (gi) gi.textContent = '🙏';
+  if (gt) gt.textContent = '"' + d.quote + '"';
+  if (gs) gs.textContent = '— ' + d.source;
+}
+
+// ============ INFO MODALS ============
+function showInfoModal(title, html_content) {
+  let overlay = $('infoOverlay');
+  if (!overlay) {
+    overlay = document.createElement('div');
+    overlay.id = 'infoOverlay';
+    overlay.className = 'info-overlay';
+    overlay.innerHTML = '<div class="info-modal"><button class="info-close" onclick="closeInfoModal()">✕</button><div class="info-title" id="infoTitle"></div><div class="info-text" id="infoBody"></div></div>';
+    overlay.addEventListener('click', e => { if (e.target === overlay) closeInfoModal(); });
+    document.body.appendChild(overlay);
+  }
+  $('infoTitle').textContent = title;
+  $('infoBody').innerHTML = html_content;
+  overlay.classList.add('show');
+}
+function closeInfoModal() {
+  const o = $('infoOverlay');
+  if (o) o.classList.remove('show');
+}
+
+function showAboutTeam() {
+  showInfoModal('เกี่ยวกับทีมบรรณาธิการ sumdays', `
+    <p><strong>sumdays</strong> คือแพลตฟอร์มข่าวสารออนไลน์ที่มุ่งนำเสนอข้อมูลข่าวสารที่เข้าใจง่าย ตรงประเด็น และเป็นประโยชน์ต่อผู้สูงวัยและทุกคนในครอบครัว</p>
+    <p><strong>ทีมบรรณาธิการ</strong> ประกอบด้วยนักข่าวและผู้เชี่ยวชาญในสาขาต่างๆ ที่มีประสบการณ์ด้านการนำเสนอข้อมูลสุขภาพ นโยบายสาธารณะ และสวัสดิการสังคม</p>
+    <p>เราเชื่อว่าทุกคนควรมีสิทธิ์เข้าถึงข้อมูลที่ถูกต้อง ทันเหตุการณ์ และนำไปใช้ประโยชน์ได้จริงในชีวิตประจำวัน</p>
+    <p>📧 ติดต่อกองบรรณาธิการ: editorial@sumdays.th</p>
+  `);
+}
+
+function showPolicy() {
+  showInfoModal('นโยบายการตีพิมพ์', `
+    <p><strong>หลักการนำเสนอข่าว</strong></p>
+    <p>sumdays ยึดมั่นในการนำเสนอข้อมูลที่ถูกต้อง เป็นกลาง และตรวจสอบได้จากแหล่งที่เชื่อถือได้ เราไม่รับนำเสนอเนื้อหาที่เป็นข่าวปลอม (Fake News) หรือข้อมูลที่อาจสร้างความเข้าใจผิด</p>
+    <p><strong>แหล่งข้อมูล</strong></p>
+    <p>ข่าวทุกชิ้นอ้างอิงจากแหล่งข้อมูลทางการ เช่น หน่วยงานรัฐ สถาบันการแพทย์ และองค์กรที่ได้รับการยอมรับ</p>
+    <p><strong>การแก้ไขข้อผิดพลาด</strong></p>
+    <p>หากพบข้อผิดพลาดในเนื้อหา ทีมบรรณาธิการจะดำเนินการแก้ไขและแจ้งให้ผู้อ่านทราบโดยเร็วที่สุด</p>
+    <p><strong>การเปิดเผยข้อมูล</strong></p>
+    <p>sumdays เปิดเผยความสัมพันธ์ทางการเงินกับผู้สนับสนุนและโฆษณาอย่างชัดเจน เนื้อหาโฆษณาจะถูกระบุให้ชัดเจนแยกจากเนื้อหาบรรณาธิการ</p>
+    <p>📧 ส่งข้อเสนอแนะ: feedback@sumdays.th</p>
+  `);
+}
+
+function showAdContact() {
+  showInfoModal('ติดต่อโฆษณา', `
+    <p>ต้องการลงโฆษณาหรือประชาสัมพันธ์สินค้า/บริการกับทีมงาน sumdays? กรอกแบบฟอร์มด้านล่างได้เลยค่ะ</p>
+    <div class="ad-form-group">
+      <label class="ad-form-label">ชื่อ-นามสกุล / องค์กร *</label>
+      <input type="text" class="ad-form-input" id="adName" placeholder="เช่น บริษัท ABC จำกัด">
+    </div>
+    <div class="ad-form-group">
+      <label class="ad-form-label">อีเมล *</label>
+      <input type="email" class="ad-form-input" id="adEmail" placeholder="your@email.com">
+    </div>
+    <div class="ad-form-group">
+      <label class="ad-form-label">เบอร์โทรศัพท์</label>
+      <input type="tel" class="ad-form-input" id="adPhone" placeholder="08x-xxx-xxxx">
+    </div>
+    <div class="ad-form-group">
+      <label class="ad-form-label">รายละเอียดที่ต้องการโฆษณา *</label>
+      <textarea class="ad-form-textarea" id="adDetail" placeholder="กรุณาอธิบายสินค้า/บริการ งบประมาณโดยประมาณ และช่วงเวลาที่ต้องการลงโฆษณา"></textarea>
+    </div>
+    <button onclick="sendAdContact()" style="background:var(--accent);color:#fff;border:none;border-radius:10px;padding:12px 28px;font-size:16px;font-weight:700;cursor:pointer;font-family:inherit;width:100%;">📧 ส่งข้อความถึงแอดมิน</button>
+  `);
+}
+
+function sendAdContact() {
+  const name = $('adName') ? $('adName').value.trim() : '';
+  const email = $('adEmail') ? $('adEmail').value.trim() : '';
+  const detail = $('adDetail') ? $('adDetail').value.trim() : '';
+  if (!name || !email || !detail) { toast('กรุณากรอกข้อมูลให้ครบค่ะ', 'error'); return; }
+  const subject = encodeURIComponent('ติดต่อโฆษณา sumdays — ' + name);
+  const body = encodeURIComponent('ชื่อ/องค์กร: ' + name + '\nอีเมล: ' + email + '\nเบอร์: ' + ($('adPhone')?$('adPhone').value:'') + '\n\nรายละเอียด:\n' + detail);
+  window.location.href = 'mailto:sumdayswork@gmail.com?subject=' + subject + '&body=' + body;
+  toast('เปิดโปรแกรมอีเมลแล้วค่ะ กรุณากด "ส่ง" ในโปรแกรมของท่าน', 'success');
+}
+
+// ============ TICKER ============
+const DEFAULT_TICKER = [
+  'รัฐบาลเปิดตัวโครงการเบี้ยผู้สูงอายุรูปแบบใหม่ เพิ่มสวัสดิการถ้วนหน้า',
+  'กรมอนามัยแนะนำฉีดวัคซีนไข้หวัดใหญ่ ฟรี! สำหรับผู้สูงอายุ 65 ปีขึ้นไป',
+  'ธนาคารกรุงไทยขยายเวลาให้บริการสาขาพิเศษเพื่อผู้สูงวัย ทุกวันจันทร์–ศุกร์',
+  'สปสช. ยืนยัน บัตรทอง รักษาฟรีทุกโรงพยาบาลรัฐ ไม่ต้องมีใบส่งตัว'
+];
+
+function getTicker() {
+  const saved = localStorage.getItem('sumdaysTicker');
+  return saved ? JSON.parse(saved) : DEFAULT_TICKER;
+}
+
+function renderTicker() {
+  const track = document.getElementById('ticker');
+  if (!track) return;
+  const items = getTicker().filter(t => t.trim());
+  // duplicate for seamless loop
+  const all = [...items, ...items];
+  track.innerHTML = all.map(t =>
+    `<span class="ticker-item"><span class="ticker-dot"></span>${t}</span>`
+  ).join('');
+}
+
+function saveTicker() {
+  const el = document.getElementById('tickerInput');
+  if (!el) return;
+  const lines = el.value.split('\n').map(l => l.trim()).filter(Boolean);
+  if (!lines.length) { toast('กรุณาใส่ข้อความอย่างน้อย 1 บรรทัดค่ะ','error'); return; }
+  localStorage.setItem('sumdaysTicker', JSON.stringify(lines));
+  renderTicker();
+  toast('บันทึก Ticker แล้วค่ะ ✅','success');
+}
+
+// ============ BODY TEXT HELPERS ============
+function bodyToText(html_body) {
+  // Convert <p>...</p> back to plain text with newlines for editing
+  return html_body
+    .replace(/<img([^>]*)>/gi, (m) => '\n' + m + '\n')
+    .replace(/<\/p>\s*<p>/gi, '\n\n')
+    .replace(/<p>/gi, '')
+    .replace(/<\/p>/gi, '')
+    .replace(/<br\s*\/?>/gi, '\n')
+    .replace(/&nbsp;/gi, ' ')
+    .trim();
+}
+
+function textToBody(text) {
+  // Convert plain text back to <p> wrapped HTML, preserve <img> tags
+  const lines = text.split(/\n/);
+  let result = '';
+  let para = '';
+  for (const line of lines) {
+    const trimmed = line.trim();
+    if (trimmed.startsWith('<img')) {
+      if (para.trim()) { result += '<p>' + para.trim() + '</p>'; para = ''; }
+      result += trimmed;
+    } else if (trimmed === '') {
+      if (para.trim()) { result += '<p>' + para.trim() + '</p>'; para = ''; }
+    } else {
+      para += (para ? ' ' : '') + trimmed;
+    }
+  }
+  if (para.trim()) result += '<p>' + para.trim() + '</p>';
+  return result;
+}
+
+// ============ INSERT IMAGE INTO BODY ============
+function insertImageToBody() {
+  const urlEl = document.getElementById('insertImgUrl');
+  const body = document.getElementById('fBody');
+  const preview = document.getElementById('insertImgPreview');
+  const previewImg = document.getElementById('insertImgPreviewImg');
+  if (!urlEl || !body) return;
+  const url = urlEl.value.trim();
+  if (!url) { toast('กรุณาวาง URL รูปภาพก่อนค่ะ', 'error'); return; }
+
+  // Show preview
+  if (preview && previewImg) {
+    previewImg.src = url;
+    previewImg.onerror = () => { preview.style.display = 'none'; toast('ไม่สามารถโหลดรูปได้ กรุณาตรวจสอบ URL ค่ะ','error'); };
+    previewImg.onload = () => { preview.style.display = 'block'; };
+  }
+
+  // Insert <img> tag at cursor position or end of textarea
+  const imgTag = `\n<img src="${url}" alt="" style="width:100%;border-radius:10px;margin:12px 0;object-fit:cover;">\n`;
+  const start = body.selectionStart;
+  const end = body.selectionEnd;
+  const current = body.value;
+  body.value = current.slice(0, start) + imgTag + current.slice(end);
+  body.selectionStart = body.selectionEnd = start + imgTag.length;
+  body.focus();
+  urlEl.value = '';
+  toast('แทรกรูปภาพแล้วค่ะ ✅', 'success');
+}
+
+// ============ ADMIN IMAGE PREVIEW ============
+function previewAdminImage(url) {
+  const box = document.getElementById('adminImgPreview');
+  if (!box) return;
+  if (!url) { box.style.display = 'none'; return; }
+  box.style.display = 'block';
+  const img = box.querySelector('img');
+  if (img) { img.src = url; img.onerror = () => { box.style.display = 'none'; }; }
+}
+
+// ============ TOAST ============
+function toast(msg, type='success') {
+  const c = $('toastContainer');
+  const t = document.createElement('div');
+  t.className = `toast ${type}`;
+  t.innerHTML = (type === 'success' ? '✅' : '❌') + ' ' + msg;
+  c.appendChild(t);
+  setTimeout(() => t.remove(), 3000);
+}
+
+// ============ INIT ============
+document.addEventListener('DOMContentLoaded', () => {
+  setDateDisplay();
+  setGreeting();
+  renderTicker();
+  const saved = localStorage.getItem('sumdaysFontScale');
+  if (saved) { setFont(parseFloat(saved), null); }
+  if (localStorage.getItem('sumdaysDark') === '1') toggleDark(null);
+  renderNews();
+  const observer = new IntersectionObserver(entries => {
+    entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('visible'); observer.unobserve(e.target); }});
+  }, { threshold: 0.08, rootMargin: '0px 0px -30px 0px' });
+  document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+  document.addEventListener('keydown', e => {
+    if (e.key === 'Escape') {
+      $('articleOverlay').classList.remove('show');
+      $('adminOverlay').classList.remove('show');
+      $('loginOverlay').classList.remove('show');
+      document.body.style.overflow = '';
+    }
+  });
+});
+</script>
+</body>
+</html>
