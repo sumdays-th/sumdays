@@ -1913,12 +1913,13 @@ function saveNews(id) {
   const excerpt = $('fExcerpt').value.trim();
   const body = textToBody($('fBody').value);
   const author = $('fAuthor').value.trim() || 'กองบรรณาธิการ sumdays';
+  const image = $('fImage') ? $('fImage').value.trim() : '';
   if (!title || !excerpt || !body) { toast('กรุณากรอกข้อมูลให้ครบค่ะ', 'error'); return; }
   const now = new Date();
   const dateStr = now.toLocaleDateString('th-TH', { day:'numeric', month:'short', year:'numeric' });
   if (id === -1) {
-    const newId = Math.max(...localNews.map(n => n.id)) + 1;
-    localNews.unshift({ id:newId, cat, catLabel:catMap[cat], title, excerpt, body, author, date:dateStr, readTime:'3 นาที', views:0 });
+    const newId = localNews.length ? Math.max(...localNews.map(n => n.id)) + 1 : 1;
+    localNews.unshift({ id:newId, cat, catLabel:catMap[cat], title, excerpt, body, author, date:dateStr, readTime:'3 นาที', views:0, image });
     toast('เพิ่มข่าวใหม่แล้วค่ะ!', 'success');
   } else {
     const idx = localNews.findIndex(n => n.id === id);
