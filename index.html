@@ -2185,7 +2185,10 @@ function bodyToText(html_body) {
 }
 
 function textToBody(text) {
-  // Convert plain text back to <p> wrapped HTML, preserve <img> tags
+  if (!text || !text.trim()) return '';
+  // If already contains HTML tags like <p>, return as-is
+  if (text.includes('<p>') || text.includes('<p ')) return text.trim();
+  // Convert plain text to <p> wrapped HTML, preserve <img> tags
   const lines = text.split(/\n/);
   let result = '';
   let para = '';
@@ -2201,7 +2204,7 @@ function textToBody(text) {
     }
   }
   if (para.trim()) result += '<p>' + para.trim() + '</p>';
-  return result;
+  return result || text.trim();
 }
 
 // ============ INSERT IMAGE INTO BODY ============
